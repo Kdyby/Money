@@ -1,0 +1,26 @@
+{
+	"type": "library",
+	"description": "Currency manipulation and transformation for Nette Framework",
+	"keywords": ["nette", "kdyby", "money", "currency"],
+	"homepage": "http://kdyby.org",
+	"license": ["BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
+	"authors": [],
+	"support": {
+		"email": "filip@prochazka.su",
+		"issues": "https://github.com/kdyby/money/issues"
+	},
+	"require": {
+		"nette/nette": "@dev"
+	},
+	"require-dev": {
+		"nette/tester": "@dev"
+	},
+	"autoload": {
+		"psr-0": {
+			"Kdyby\\Money\\": "src/"
+		},
+		"classmap": [
+			"src/Kdyby/Money/exceptions.php"
+		]
+	}
+}
