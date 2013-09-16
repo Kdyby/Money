@@ -41,9 +41,7 @@ foreach ($xml->CcyTbl->children() as $entry) {
 	}
 }
 
-$className = 'Kdyby\\Money\\CurrencyTable';
-$namespace = dirname($className);
-$generator = new Nette\PhpGenerator\ClassType(basename($className));
+$generator = new Nette\PhpGenerator\ClassType('CurrencyTable');
 $generator->addDocument("This class is generated from data provided by ISO 4217 Maintenance Agency");
 $generator->addDocument("Note: Funds, testing values and metals are not present.");
 $generator->addConst('VERSION', (string) $xml['Pblshd']);
@@ -60,7 +58,15 @@ $generator->addMethod('__construct')->setVisibility('private')->setBody('// cann
 $contents = <<<HEREDOC
 <?php
 
-namespace $namespace;
+/**
+ * This file is part of the Kdyby (http://www.kdyby.org)
+ *
+ * Copyright (c) 2008 Filip Procházka (filip@prochazka.su)
+ *
+ * For the full copyright and license information, please view the file license.txt that was distributed with this source code.
+ */
+
+namespace Kdyby\Money;
 
 
 $generator
