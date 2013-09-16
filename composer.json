@@ -14,7 +14,8 @@
 		"nette/nette": "@dev"
 	},
 	"require-dev": {
-		"nette/tester": "@dev"
+		"nette/tester": "@dev",
+		"kdyby/doctrine": "@dev"
 	},
 	"suggest": {
 		"kdyby/doctrine": "@dev"

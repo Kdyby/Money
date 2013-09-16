@@ -1,0 +1,16 @@
+extensions:
+	annotations: Kdyby\Annotations\DI\AnnotationsExtension
+	doctrine: Kdyby\Doctrine\DI\OrmExtension
+	console: Kdyby\Console\DI\ConsoleExtension
+	events: Kdyby\Events\DI\EventsExtension
+
+console:
+	url: http://example.com
+
+doctrine:
+	metadataCache: array
+	queryCache: array
+	resultCache: array
+	hydrationCache: array
+	driver: pdo_sqlite
+	memory: true
