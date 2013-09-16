@@ -24,7 +24,10 @@
 	},
 	"require-dev": {
 		"nette/tester": "@dev",
-		"kdyby/doctrine": "@dev"
+		"kdyby/doctrine": "@dev",
+		"kdyby/events": "@dev",
+		"kdyby/console": "@dev",
+		"kdyby/annotations": "@dev"
 	},
 	"suggest": {
 		"kdyby/doctrine": "@dev"
