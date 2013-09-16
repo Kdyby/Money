@@ -5,7 +5,16 @@
 	"keywords": ["nette", "kdyby", "money", "currency"],
 	"homepage": "http://kdyby.org",
 	"license": ["BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
-	"authors": [],
+	"authors": [
+		{
+			"name": "Michal Gebauer",
+			"homepage": "http://mishak.net/"
+		},
+		{
+			"name": "Filip Procházka",
+			"homepage": "http://filip-prochazka.com"
+		}
+	],
 	"support": {
 		"email": "filip@prochazka.su",
 		"issues": "https://github.com/kdyby/money/issues"
