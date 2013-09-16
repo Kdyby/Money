@@ -2,12 +2,12 @@
 
 namespace Kdyby\Money\Types;
 
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\DecimalType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Kdyby\Money\Amount as AmountObject;
 
 
-class Amount extends Type
+class Amount extends DecimalType
 {
 
     const AMOUNT = 'amount';
@@ -32,10 +32,10 @@ class Amount extends Type
 
     public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
-        return $platform->getDecimalTypeDeclarationSQL(array(
-            'precision' => isset($fieldDeclaration['precision']) ? $fieldDeclaration['precision'] : self::DEFAULT_PRECISION,
-            'scale' => isset($fieldDeclaration['scale']) ? $fieldDeclaration['scale'] : self::DEFAULT_SCALE,
-        ));
+        return parent::getSqlDeclaration($fieldDeclaration + array(
+            'precision' => self::DEFAULT_PRECISION,
+            'scale' => self::DEFAULT_SCALE,
+        ), $platform);
     }
 
 
