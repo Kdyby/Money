@@ -10,7 +10,8 @@
 		"issues": "https://github.com/kdyby/money/issues"
 	},
 	"require": {
-		"nette/nette": "@dev"
+		"nette/nette": "@dev",
+		"kdyby/doctrine": "@dev"
 	},
 	"require-dev": {
 		"nette/tester": "@dev"

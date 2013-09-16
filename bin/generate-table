@@ -1,0 +1,96 @@
+#!/usr/bin/sh php
+<?php
+/**
+ * This script generates Kdyby\Money\CurrencyTable from data provided by ISO 4217 Maintenance Agency
+ * Note: Countries without universal currency, funds, testing values and metals are not added to table.
+ */
+
+$contents = file_get_contents('http://www.currency-iso.org/dam/downloads/table_a1.xml');
+
+$xml = simplexml_load_string($contents);
+
+$currencies = array();
+
+foreach ($xml->CcyTbl->children() as $entry) {
+	if (isset($entry['isFund'])) { // skip funds
+		continue;
+	}
+
+    if (substr((string)$entry->CtryNm, 0, 2) == 'ZZ') { // skip testing and metals
+        continue;
+    }
+
+    if ((string)$entry->CcyNm === 'No universal currency') { // skip countries without universal currency
+        continue;
+    }
+
+	if (!isset($currencies[$code = (string) $entry->Ccy])) {
+		$currencies[$code] = array(
+			'code' => $code,
+			'number' => (string)  $entry->CcyNbr,
+			'name' => (string) $entry->CcyNm,
+			'decimals' => (int) $entry->CcyMnrUnts,
+			'countries' => [ (string) $entry->CtryNm ],
+		);
+
+	} else {
+		$currencies[$code]['countries'][] = (string) $entry->CtryNm;
+	}
+}
+
+$published = var_export((string) $xml['Pblshd'], TRUE);
+$table = var_export($currencies, TRUE);
+$records = array();
+$prefix = "\t\t";
+foreach ($currencies as $currency) {
+    $record = "\"$currency[code]\" => array(\n";
+    foreach (array('code', 'number', 'name', 'decimals') as $key) {
+        $record .= "$prefix\t\"$key\" => \"$currency[$key]\",\n";
+    }
+    $record .= "$prefix\t\"countries\" => array(\n";
+    foreach ($currency['countries'] as $country) {
+        $record .= "$prefix\t\t" . var_export($country, TRUE) . ",\n";
+    }
+    $record .= "$prefix\t),\n";
+    $record .= "$prefix)";
+    $records[] = $record;
+}
+$suffix = ",\n";
+$records = implode($suffix . $prefix, $records);
+
+$contents = <<<HEREDOC
+<?php
+
+namespace Kdyby\Money;
+
+
+class CurrencyTable
+{
+
+	const VERSION = $published;
+
+    private static \$records = array(
+        $records,
+    );
+
+
+    /**
+     * @param string \$code 3 letter ISO 4217 code
+     * @return array|NULL
+     */
+    public static function getRecord(\$code)
+    {
+        return isset(self::\$records[\$code]) ? self::\$records[\$code] : NULL;
+    }
+
+
+    private function __construct()
+    {
+        // this class cannot be instantiated
+    }
+
+}
+
+HEREDOC;
+
+file_put_contents(__DIR__ . '/../src/Kdyby/Money/CurrencyTable.php', $contents);
