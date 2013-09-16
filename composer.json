@@ -10,11 +10,13 @@
 		"issues": "https://github.com/kdyby/money/issues"
 	},
 	"require": {
-		"nette/nette": "@dev",
-		"kdyby/doctrine": "@dev"
+		"nette/nette": "@dev"
 	},
 	"require-dev": {
 		"nette/tester": "@dev"
+	},
+	"suggest": {
+		"kdyby/doctrine": "@dev"
 	},
 	"autoload": {
 		"psr-0": {
