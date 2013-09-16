@@ -1,4 +1,5 @@
 {
+	"name": "kdyby/money",
 	"type": "library",
 	"description": "Currency manipulation and transformation for Nette Framework",
 	"keywords": ["nette", "kdyby", "money", "currency"],
