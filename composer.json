@@ -15,6 +15,9 @@
 	"require-dev": {
 		"nette/tester": "@dev"
 	},
+	"suggest": {
+		"kdyby/doctrine": "@dev"
+	},
 	"autoload": {
 		"psr-0": {
 			"Kdyby\\Money\\": "src/"
