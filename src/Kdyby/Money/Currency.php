@@ -151,7 +151,7 @@ final class Currency extends Nette\Object
 	 */
 	public function __wakeup()
 	{
-		throw new SingletonException("Cloning is not allowed on this object.");
+		throw new SingletonException("Unserialization is not allowed on this object.");
 	}
 
 
@@ -161,7 +161,7 @@ final class Currency extends Nette\Object
 	 */
 	public static function __set_state($an_array)
 	{
-		throw new SingletonException("Cloning is not allowed on this object.");
+		throw new SingletonException("Unserialization is not allowed on this object.");
 	}
 
 }
