@@ -2,6 +2,7 @@
 <?php
 
 require __DIR__ . '/../vendor/autoload.php';
+Nette\Diagnostics\Debugger::enable(FALSE);
 
 /**
  * This script generates Kdyby\Money\CurrencyTable from data provided by ISO 4217 Maintenance Agency
@@ -46,11 +47,14 @@ $generator->addDocument("This class is generated from data provided by ISO 4217 
 $generator->addDocument("Note: Funds, testing values and metals are not present.");
 $generator->addConst('VERSION', (string) $xml['Pblshd']);
 $generator->addProperty('records', $currencies)->setStatic(TRUE);
+$generator->addExtend('Nette\Object');
+$generator->setFinal(TRUE);
 
 $getRecord = $generator->addMethod('getRecord');
 $getRecord->addParameter('code');
 $getRecord->addDocument('@param string $code 3 letter ISO 4217 code');
 $getRecord->addDocument('@return array|NULL');
+$getRecord->setStatic(TRUE);
 $getRecord->setBody('return isset(self::$records[$code]) ? self::$records[$code] : NULL;');
 
 $generator->addMethod('__construct')->setVisibility('private')->setBody('// cannot be instantiated');
@@ -67,6 +71,9 @@ $contents = <<<HEREDOC
  */
 
 namespace Kdyby\Money;
+
+use Nette;
+
 
 
 $generator

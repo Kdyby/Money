@@ -10,12 +10,15 @@
 
 namespace Kdyby\Money;
 
+use Nette;
+
+
 
 /**
  * This class is generated from data provided by ISO 4217 Maintenance Agency
  * Note: Funds, testing values and metals are not present.
  */
-class CurrencyTable
+final class CurrencyTable extends Nette\Object
 {
 
 	const VERSION = '2013-04-09';
@@ -1344,7 +1347,7 @@ class CurrencyTable
 	 * @param string $code 3 letter ISO 4217 code
 	 * @return array|NULL
 	 */
-	public function getRecord($code)
+	public static function getRecord($code)
 	{
 		return isset(self::$records[$code]) ? self::$records[$code] : NULL;
 	}
