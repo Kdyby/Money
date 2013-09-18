@@ -30,15 +30,15 @@ class Money extends Nette\Object
 	 */
 	private $decimals;
 
-    /**
+	/**
 	 * @var Currency
 	 */
-    private $currency;
+	private $currency;
 
 
 
-    public function __construct($amount, Currency $currency)
-    {
+	public function __construct($amount, Currency $currency)
+	{
 		$this->currency = $currency;
 
 		if ($currency->getDecimals() > 0) {
@@ -46,7 +46,7 @@ class Money extends Nette\Object
 			$amount = substr($amount, 0, -($currency->getDecimals()));
 		}
 		$this->amount = $amount;
-    }
+	}
 
 
 
@@ -54,9 +54,9 @@ class Money extends Nette\Object
 	 * @return int
 	 */
 	public function getAmount()
-    {
-        return $this->amount;
-    }
+	{
+		return $this->amount;
+	}
 
 
 
@@ -74,9 +74,9 @@ class Money extends Nette\Object
 	 * @return Currency
 	 */
 	public function getCurrency()
-    {
-        return $this->currency;
-    }
+	{
+		return $this->currency;
+	}
 
 
 
