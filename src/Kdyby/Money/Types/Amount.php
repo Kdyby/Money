@@ -12,6 +12,7 @@ namespace Kdyby\Money\Types;
 
 use Doctrine\DBAL\Types\DecimalType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Types\IntegerType;
 use Kdyby\Money\Amount as AmountObject;
 
 
@@ -19,21 +20,10 @@ use Kdyby\Money\Amount as AmountObject;
 /**
  * @author Michal Gebauer <mishak@mishak.net>
  */
-class Amount extends DecimalType
+class Amount extends IntegerType
 {
 
     const AMOUNT = 'amount';
-
-    /**
-     * Most currencies have 2 decimal places few have 3 as of 2013-04-09
-     */
-    const DEFAULT_SCALE = 2;
-
-    /**
-     * Value is based on US budget that was in trillions for last two decades
-     * so even for hi-end shopping it should be safe
-     */
-    const DEFAULT_PRECISION = 16;
 
 
     public function getName()
@@ -42,28 +32,15 @@ class Amount extends DecimalType
     }
 
 
-    public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
-    {
-        return parent::getSqlDeclaration($fieldDeclaration + array(
-            'precision' => self::DEFAULT_PRECISION,
-            'scale' => self::DEFAULT_SCALE,
-        ), $platform);
-    }
-
-
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-        return new AmountObject($value);
+        return ceil($value);
     }
 
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
-        if ($value instanceof AmountObject) {
-            $value = $value->__toString();
-        }
-
-        return $value;
+        return ceil($value);
     }
 
 }

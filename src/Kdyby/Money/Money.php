@@ -10,36 +10,82 @@
 
 namespace Kdyby\Money;
 
+use Nette;
+
+
 
 /**
  * @author Michal Gebauer <mishak@mishak.net>
  */
-class Money
+class Money extends Nette\Object
 {
 
-    /** @var Amount */
-    private $amount;
+	/**
+	 * @var integer
+	 */
+	private $amount;
 
-    /** @var Currency */
+	/**
+	 * @var integer
+	 */
+	private $decimals;
+
+    /**
+	 * @var Currency
+	 */
     private $currency;
 
 
-    public function __construct(Amount $amount, Currency $currency)
+
+    public function __construct($amount, Currency $currency)
     {
-        $this->amount = $amount;
-        $this->currency = $currency;
+		$this->currency = $currency;
+
+		if ($currency->getDecimals() > 0) {
+			$this->decimals = substr($amount, -($currency->getDecimals()));
+			$amount = substr($amount, 0, -($currency->getDecimals()));
+		}
+		$this->amount = $amount;
     }
 
 
-    public function getAmount()
+
+	/**
+	 * @return int
+	 */
+	public function getAmount()
     {
         return $this->amount;
     }
 
 
-    public function getCurrency()
+
+	/**
+	 * @return int
+	 */
+	public function getDecimals()
+	{
+		return $this->decimals;
+	}
+
+
+
+	/**
+	 * @return Currency
+	 */
+	public function getCurrency()
     {
         return $this->currency;
     }
+
+
+
+	/**
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return (string)$this->amount . '.' . $this->decimals;
+	}
 
 }
