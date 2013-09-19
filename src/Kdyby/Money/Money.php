@@ -85,7 +85,7 @@ class Money extends Nette\Object
 	 */
 	public function __toString()
 	{
-		return (string)$this->amount . $this->decimals;
+		return (string)$this->amount . str_pad($this->decimals, $this->currency->getDecimals(), '0', STR_PAD_LEFT);
 	}
 
 }

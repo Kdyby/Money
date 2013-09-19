@@ -123,7 +123,7 @@ final class Currency extends Nette\Object
 	 */
 	public static function get($code)
 	{
-		if (isset(static::$currencies[$code])) {
+		if (isset(static::$currencies[$code = strtoupper($code)])) {
 			return static::$currencies[$code];
 		}
 
