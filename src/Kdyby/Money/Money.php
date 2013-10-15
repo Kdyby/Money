@@ -41,11 +41,17 @@ class Money extends Nette\Object
 	{
 		$this->currency = $currency;
 
-		if ($currency->getDecimals() > 0) {
-			$this->decimals = substr($amount, -($currency->getDecimals()));
-			$amount = substr($amount, 0, -($currency->getDecimals()));
+		if ($amount instanceof Money) {
+			$this->amount = $amount->amount;
+			$this->decimals = $amount->decimals;
+
+		} else {
+			if ($currency->getDecimals() > 0) {
+				$this->decimals = substr($amount, -($currency->getDecimals()));
+				$amount = substr($amount, 0, -($currency->getDecimals()));
+			}
+			$this->amount = $amount;
 		}
-		$this->amount = $amount;
 	}
 
 
