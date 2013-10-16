@@ -46,6 +46,10 @@ class Money extends Nette\Object
 			$this->decimals = $amount->decimals;
 
 		} else {
+			if (number_format($amount, 0, '', '') !== (string)$amount) {
+				throw new InvalidArgumentException("Only whole numbers are allowed, $amount given.");
+			}
+
 			if ($currency->getDecimals() > 0) {
 				$this->decimals = substr($amount, -($currency->getDecimals()));
 				$amount = substr($amount, 0, -($currency->getDecimals()));
