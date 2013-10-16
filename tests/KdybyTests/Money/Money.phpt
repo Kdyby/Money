@@ -26,34 +26,34 @@ require_once __DIR__ . '/../bootstrap.php';
 class MoneyTest extends Tester\TestCase
 {
 
-	public function testDecimals()
+	public function dataDecimals_valid()
 	{
-		$money = new Kdyby\Money\Money(1, Currency::get('CZK'));
-		Assert::same(0, $money->getAmount());
-		Assert::same(1, $money->getDecimals());
-		Assert::same('1', (string) $money);
+		return array(
+			array(1, 0, 1, '1'),
+			array(10, 0, 10, '10'),
+			array(10000, 100, 0, '10000'),
+			array(10010, 100, 10, '10010'),
+			array(10010.0, 100, 10, '10010'),
+		);
+	}
 
-		$money = new Kdyby\Money\Money(10, Currency::get('CZK'));
-		Assert::same(0, $money->getAmount());
-		Assert::same(10, $money->getDecimals());
-		Assert::same('10', (string) $money);
 
-		$money = new Kdyby\Money\Money(10000, Currency::get('CZK'));
-		Assert::same(100, $money->getAmount());
-		Assert::same(0, $money->getDecimals());
-		Assert::same(Currency::get('czk'), $money->getCurrency());
-		Assert::same('10000', (string) $money);
 
-		$money = new Kdyby\Money\Money(10010, Currency::get('CZK'));
-		Assert::same(100, $money->getAmount());
-		Assert::same(10, $money->getDecimals());
-		Assert::same('10010', (string) $money);
+	/**
+	 * @dataProvider dataDecimals_valid
+	 */
+	public function testDecimals_valid($amount, $expectedAmount, $expectedDecimals, $formatted)
+	{
+		$money = new Kdyby\Money\Money($amount, Currency::get('CZK'));
+		Assert::same($expectedAmount, $money->getAmount());
+		Assert::same($expectedDecimals, $money->getDecimals());
+		Assert::same($formatted, (string) $money);
+	}
 
-		$money = new Kdyby\Money\Money(10010.0, Currency::get('CZK'));
-		Assert::same(100, $money->getAmount());
-		Assert::same(10, $money->getDecimals());
-		Assert::same('10010', (string) $money);
 
+
+	public function testDecimals_invalid()
+	{
 		Assert::throws(function () {
 			new Kdyby\Money\Money(10010.10, Currency::get('CZK'));
 		}, 'Kdyby\Money\InvalidArgumentException', 'Only whole numbers are allowed, 10010.1 given.');
