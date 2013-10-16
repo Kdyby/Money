@@ -173,11 +173,7 @@ class Money extends Nette\Object
 	 */
 	public function __toString()
 	{
-		if ($this->amount == 0) {
-			return (string) $this->decimals;
-		}
-
-		return (string) $this->amount . str_pad($this->decimals, $this->currency->getDecimals(), '0', STR_PAD_LEFT);
+		return (string) ($this->amount * pow(10, $this->currency->decimals) + $this->decimals);
 	}
 
 
