@@ -190,7 +190,7 @@ class MoneyTest extends Tester\TestCase
 
 
 
-	public function dataLargerOrEqualTo()
+	public function dataLargerOrEquals()
 	{
 		return array(
 			array(0, 0, TRUE),
@@ -227,14 +227,14 @@ class MoneyTest extends Tester\TestCase
 
 
 	/**
-	 * @dataProvider dataLargerOrEqualTo
+	 * @dataProvider dataLargerOrEquals
 	 */
-	public function testLargerOrEqualTo($a, $b, $expected)
+	public function testLargerOrEquals($a, $b, $expected)
 	{
 		$a = new Money($a, Currency::get('CZK'));
 
-		Assert::same($expected, $a->largerOrEqualTo(new Money($b, Currency::get('CZK'))));
-		Assert::same($expected, $a->largerOrEqualTo($b));
+		Assert::same($expected, $a->largerOrEquals(new Money($b, Currency::get('CZK'))));
+		Assert::same($expected, $a->largerOrEquals($b));
 	}
 
 
@@ -261,7 +261,7 @@ class MoneyTest extends Tester\TestCase
 		}, 'Kdyby\Money\InvalidArgumentException', 'Given value has currency EUR, but CZK was expected. To operate on these two objects, use currency table and convert the value first.');
 
 		Assert::throws(function () use ($czk, $eur) {
-			$czk->largerOrEqualTo($eur);
+			$czk->largerOrEquals($eur);
 		}, 'Kdyby\Money\InvalidArgumentException', 'Given value has currency EUR, but CZK was expected. To operate on these two objects, use currency table and convert the value first.');
 
 		Assert::throws(function () use ($czk, $eur) {

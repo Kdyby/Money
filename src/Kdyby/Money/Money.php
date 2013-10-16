@@ -149,7 +149,7 @@ class Money extends Nette\Object
 	 * @param int|float|string|Money $amount
 	 * @return bool
 	 */
-	public function largerOrEqualTo($amount)
+	public function largerOrEquals($amount)
 	{
 		$this->assertSameCurrency($amount);
 
