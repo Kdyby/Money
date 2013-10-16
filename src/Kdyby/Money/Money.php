@@ -91,6 +91,55 @@ class Money extends Nette\Object
 
 
 	/**
+	 * @param int|float|string|Money $amount
+	 * @return bool
+	 */
+	public function isEqual($amount)
+	{
+		$this->assertSameCurrency($amount);
+
+		return self::unwrap($this) === self::unwrap($amount);
+	}
+
+
+
+	/**
+	 * @param int|float|string|Money $amount
+	 * @return bool
+	 */
+	public function isLargerThan($amount)
+	{
+		$this->assertSameCurrency($amount);
+
+		return self::unwrap($this) > self::unwrap($amount);
+	}
+
+
+
+	/**
+	 * @param int|float|string|Money $amount
+	 * @return bool
+	 */
+	public function isLargerOrEqualTo($amount)
+	{
+		$this->assertSameCurrency($amount);
+
+		return self::unwrap($this) >= self::unwrap($amount);
+	}
+
+
+
+	/**
+	 * @return bool
+	 */
+	public function isZero()
+	{
+		return self::unwrap($this) == 0;
+	}
+
+
+
+	/**
 	 * @return string
 	 */
 	public function __toString()
@@ -100,6 +149,30 @@ class Money extends Nette\Object
 		}
 
 		return (string) $this->amount . str_pad($this->decimals, $this->currency->getDecimals(), '0', STR_PAD_LEFT);
+	}
+
+
+
+	private function assertSameCurrency($value)
+	{
+		if ($value instanceof Money && $value->currency !== $this->currency) {
+			throw new InvalidArgumentException("Given value has wrong currency, to combine them, use currency table and convert the value first.");
+		}
+	}
+
+
+
+	/**
+	 * @param mixed $value
+	 * @return int
+	 */
+	private static function unwrap($value)
+	{
+		if ($value instanceof Money) {
+			return (int) $value->__toString();
+		}
+
+		return (int) $value;
 	}
 
 }
