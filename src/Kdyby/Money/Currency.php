@@ -16,6 +16,11 @@ use Nette;
 
 /**
  * @author Michal Gebauer <mishak@mishak.net>
+ *
+ * @property-read int $decimals
+ * @property-read string $name
+ * @property-read string $number
+ * @property-read string $code
  */
 final class Currency extends Nette\Object
 {
