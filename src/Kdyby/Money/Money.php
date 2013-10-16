@@ -163,7 +163,7 @@ class Money extends Nette\Object
 	 */
 	public function isZero()
 	{
-		return self::unwrap($this) == 0;
+		return self::unwrap($this) === 0;
 	}
 
 
