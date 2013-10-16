@@ -42,6 +42,8 @@ class Money extends Nette\Object
 		$this->currency = $currency;
 
 		if ($amount instanceof Money) {
+			$this->assertSameCurrency($amount);
+
 			$this->amount = (int) $amount->amount;
 			$this->decimals = (int) $amount->decimals;
 
@@ -54,6 +56,7 @@ class Money extends Nette\Object
 				$this->decimals = (int) (substr($amount, -($currency->getDecimals())) ?: 0);
 				$amount = substr($amount, 0, -($currency->getDecimals()));
 			}
+
 			$this->amount = (int) ($amount ?: 0);
 		}
 	}
@@ -182,7 +185,10 @@ class Money extends Nette\Object
 	private function assertSameCurrency($value)
 	{
 		if ($value instanceof Money && $value->currency !== $this->currency) {
-			throw new InvalidArgumentException("Given value has wrong currency, to combine them, use currency table and convert the value first.");
+			throw new InvalidArgumentException(
+				"Given value has currency {$value->currency->code}, but {$this->currency->code} was expected. " .
+				"To operate on these two objects, use currency table and convert the value first."
+			);
 		}
 	}
 
