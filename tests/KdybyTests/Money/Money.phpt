@@ -96,6 +96,7 @@ class MoneyTest extends Tester\TestCase
 	{
 		return array(
 			array(0, 0, TRUE),
+			array(0, 1, FALSE),
 			array(1, 0, FALSE),
 			array(1, 1, TRUE),
 			array(10, 1, FALSE),
@@ -136,6 +137,104 @@ class MoneyTest extends Tester\TestCase
 
 		Assert::same($expected, $a->equals(new Money($b, Currency::get('CZK'))));
 		Assert::same($expected, $a->equals($b));
+	}
+
+
+
+	public function dataLargerThan()
+	{
+		return array(
+			array(0, 0, FALSE),
+			array(0, 1, FALSE),
+			array(1, 0, TRUE),
+			array(1, 1, FALSE),
+			array(10, 1, TRUE),
+			array(100, 1, TRUE),
+			array(1000, 1, TRUE),
+			array(1010, 1, TRUE),
+			array(1, 10, FALSE),
+			array(10, 10, FALSE),
+			array(100, 10, TRUE),
+			array(1000, 10, TRUE),
+			array(1010, 10, TRUE),
+			array(1, 100, FALSE),
+			array(10, 100, FALSE),
+			array(100, 100, FALSE),
+			array(1000, 100, TRUE),
+			array(1010, 100, TRUE),
+			array(1, 1000, FALSE),
+			array(10, 1000, FALSE),
+			array(100, 1000, FALSE),
+			array(1000, 1000, FALSE),
+			array(1010, 1000, TRUE),
+			array(1, 1010, FALSE),
+			array(10, 1010, FALSE),
+			array(100, 1010, FALSE),
+			array(1000, 1010, FALSE),
+			array(1010, 1010, FALSE),
+		);
+	}
+
+
+
+	/**
+	 * @dataProvider dataLargerThan
+	 */
+	public function testLargerThan($a, $b, $expected)
+	{
+		$a = new Money($a, Currency::get('CZK'));
+
+		Assert::same($expected, $a->largerThan(new Money($b, Currency::get('CZK'))));
+		Assert::same($expected, $a->largerThan($b));
+	}
+
+
+
+	public function dataLargerOrEqualTo()
+	{
+		return array(
+			array(0, 0, TRUE),
+			array(0, 1, FALSE),
+			array(1, 0, TRUE),
+			array(1, 1, TRUE),
+			array(10, 1, TRUE),
+			array(100, 1, TRUE),
+			array(1000, 1, TRUE),
+			array(1010, 1, TRUE),
+			array(1, 10, FALSE),
+			array(10, 10, TRUE),
+			array(100, 10, TRUE),
+			array(1000, 10, TRUE),
+			array(1010, 10, TRUE),
+			array(1, 100, FALSE),
+			array(10, 100, FALSE),
+			array(100, 100, TRUE),
+			array(1000, 100, TRUE),
+			array(1010, 100, TRUE),
+			array(1, 1000, FALSE),
+			array(10, 1000, FALSE),
+			array(100, 1000, FALSE),
+			array(1000, 1000, TRUE),
+			array(1010, 1000, TRUE),
+			array(1, 1010, FALSE),
+			array(10, 1010, FALSE),
+			array(100, 1010, FALSE),
+			array(1000, 1010, FALSE),
+			array(1010, 1010, TRUE),
+		);
+	}
+
+
+
+	/**
+	 * @dataProvider dataLargerOrEqualTo
+	 */
+	public function testLargerOrEqualTo($a, $b, $expected)
+	{
+		$a = new Money($a, Currency::get('CZK'));
+
+		Assert::same($expected, $a->largerOrEqualTo(new Money($b, Currency::get('CZK'))));
+		Assert::same($expected, $a->largerOrEqualTo($b));
 	}
 
 
