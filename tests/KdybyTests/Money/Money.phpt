@@ -62,6 +62,54 @@ class MoneyTest extends Tester\TestCase
 
 
 
+	public function dataEquals()
+	{
+		return array(
+			array(0, 0, TRUE),
+			array(1, 0, FALSE),
+			array(1, 1, TRUE),
+			array(10, 1, FALSE),
+			array(100, 1, FALSE),
+			array(1000, 1, FALSE),
+			array(1010, 1, FALSE),
+			array(1, 10, FALSE),
+			array(10, 10, TRUE),
+			array(100, 10, FALSE),
+			array(1000, 10, FALSE),
+			array(1010, 10, FALSE),
+			array(1, 100, FALSE),
+			array(10, 100, FALSE),
+			array(100, 100, TRUE),
+			array(1000, 100, FALSE),
+			array(1010, 100, FALSE),
+			array(1, 1000, FALSE),
+			array(10, 1000, FALSE),
+			array(100, 1000, FALSE),
+			array(1000, 1000, TRUE),
+			array(1010, 1000, FALSE),
+			array(1, 1010, FALSE),
+			array(10, 1010, FALSE),
+			array(100, 1010, FALSE),
+			array(1000, 1010, FALSE),
+			array(1010, 1010, TRUE),
+		);
+	}
+
+
+
+	/**
+	 * @dataProvider dataEquals
+	 */
+	public function testEquals($a, $b, $expected)
+	{
+		$a = new Money($a, Currency::get('CZK'));
+
+		Assert::same($expected, $a->equals(new Money($b, Currency::get('CZK'))));
+		Assert::same($expected, $a->equals($b));
+	}
+
+
+
 	public function testCurrencyConflictExceptions()
 	{
 		$czk = new Money(10000, Currency::get('CZK'));
