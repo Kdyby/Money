@@ -92,6 +92,32 @@ class Money extends Nette\Object
 
 	/**
 	 * @param int|float|string|Money $amount
+	 * @return Money
+	 */
+	public function add($amount)
+	{
+		$this->assertSameCurrency($amount);
+
+		return new Money(self::unwrap($this) + self::unwrap($amount), $this->currency);
+	}
+
+
+
+	/**
+	 * @param int|float|string|Money $amount
+	 * @return Money
+	 */
+	public function sub($amount)
+	{
+		$this->assertSameCurrency($amount);
+
+		return new Money(self::unwrap($this) - self::unwrap($amount), $this->currency);
+	}
+
+
+
+	/**
+	 * @param int|float|string|Money $amount
 	 * @return bool
 	 */
 	public function isEqual($amount)
