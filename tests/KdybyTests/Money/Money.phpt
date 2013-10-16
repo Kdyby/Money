@@ -62,6 +62,35 @@ class MoneyTest extends Tester\TestCase
 
 
 
+	public function dataIsZero()
+	{
+		return array(
+			array(0, TRUE),
+			array(1, FALSE),
+			array(10, FALSE),
+			array(100, FALSE),
+			array(1000, FALSE),
+			array(0.0, TRUE),
+			array(1.0, FALSE),
+			array(10.0, FALSE),
+			array(100.0, FALSE),
+			array(1000.0, FALSE),
+		);
+	}
+
+
+
+	/**
+	 * @dataProvider dataIsZero
+	 */
+	public function testIsZero($amount, $expected)
+	{
+		$money = new Money($amount, Currency::get('CZK'));
+		Assert::same($expected, $money->isZero());
+	}
+
+
+
 	public function dataEquals()
 	{
 		return array(
