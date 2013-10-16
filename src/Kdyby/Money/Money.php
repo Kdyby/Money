@@ -42,8 +42,8 @@ class Money extends Nette\Object
 		$this->currency = $currency;
 
 		if ($amount instanceof Money) {
-			$this->amount = $amount->amount;
-			$this->decimals = $amount->decimals;
+			$this->amount = (int) $amount->amount;
+			$this->decimals = (int) $amount->decimals;
 
 		} else {
 			if (number_format($amount, 0, '', '') !== (string)$amount) {
@@ -51,10 +51,10 @@ class Money extends Nette\Object
 			}
 
 			if ($currency->getDecimals() > 0) {
-				$this->decimals = substr($amount, -($currency->getDecimals())) ?: 0;
+				$this->decimals = (int) (substr($amount, -($currency->getDecimals())) ?: 0);
 				$amount = substr($amount, 0, -($currency->getDecimals()));
 			}
-			$this->amount = $amount ?: 0;
+			$this->amount = (int) ($amount ?: 0);
 		}
 	}
 
@@ -65,7 +65,7 @@ class Money extends Nette\Object
 	 */
 	public function getAmount()
 	{
-		return $this->amount;
+		return (int) $this->amount;
 	}
 
 
@@ -75,7 +75,7 @@ class Money extends Nette\Object
 	 */
 	public function getDecimals()
 	{
-		return $this->decimals;
+		return (int) $this->decimals;
 	}
 
 
@@ -95,7 +95,11 @@ class Money extends Nette\Object
 	 */
 	public function __toString()
 	{
-		return (string)$this->amount . str_pad($this->decimals, $this->currency->getDecimals(), '0', STR_PAD_LEFT);
+		if ($this->amount == 0) {
+			return (string) $this->decimals;
+		}
+
+		return (string) $this->amount . str_pad($this->decimals, $this->currency->getDecimals(), '0', STR_PAD_LEFT);
 	}
 
 }

@@ -28,20 +28,30 @@ class MoneyTest extends Tester\TestCase
 
 	public function testDecimals()
 	{
+		$money = new Kdyby\Money\Money(1, Currency::get('CZK'));
+		Assert::same(0, $money->getAmount());
+		Assert::same(1, $money->getDecimals());
+		Assert::same('1', (string) $money);
+
+		$money = new Kdyby\Money\Money(10, Currency::get('CZK'));
+		Assert::same(0, $money->getAmount());
+		Assert::same(10, $money->getDecimals());
+		Assert::same('10', (string) $money);
+
 		$money = new Kdyby\Money\Money(10000, Currency::get('CZK'));
-		Assert::same('100', $money->getAmount());
-		Assert::same('00', $money->getDecimals());
+		Assert::same(100, $money->getAmount());
+		Assert::same(0, $money->getDecimals());
 		Assert::same(Currency::get('czk'), $money->getCurrency());
 		Assert::same('10000', (string) $money);
 
 		$money = new Kdyby\Money\Money(10010, Currency::get('CZK'));
-		Assert::same('100', $money->getAmount());
-		Assert::same('10', $money->getDecimals());
+		Assert::same(100, $money->getAmount());
+		Assert::same(10, $money->getDecimals());
 		Assert::same('10010', (string) $money);
 
 		$money = new Kdyby\Money\Money(10010.0, Currency::get('CZK'));
-		Assert::same('100', $money->getAmount());
-		Assert::same('10', $money->getDecimals());
+		Assert::same(100, $money->getAmount());
+		Assert::same(10, $money->getDecimals());
 		Assert::same('10010', (string) $money);
 
 		Assert::throws(function () {
