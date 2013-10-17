@@ -10,11 +10,9 @@ Nette\Diagnostics\Debugger::enable(FALSE);
  */
 
 $contents = file_get_contents('http://www.currency-iso.org/dam/downloads/table_a1.xml');
-
 $xml = simplexml_load_string($contents);
 
 $currencies = array();
-
 foreach ($xml->CcyTbl->children() as $entry) {
 	if (isset($entry['isFund'])) { // skip funds
 		continue;
@@ -46,9 +44,15 @@ $generator = new Nette\PhpGenerator\ClassType('CurrencyTable');
 $generator->addDocument("This class is generated from data provided by ISO 4217 Maintenance Agency");
 $generator->addDocument("Note: Funds, testing values and metals are not present.");
 $generator->addConst('VERSION', (string) $xml['Pblshd']);
-$generator->addProperty('records', $currencies)->setStatic(TRUE);
+$records = $generator->addProperty('records', $currencies);
+$records->setStatic(TRUE);
+$records->setVisibility('private');
 $generator->addExtend('Nette\Object');
 $generator->setFinal(TRUE);
+
+$constructor = $generator->addMethod('__construct');
+$constructor->setVisibility('private');
+$constructor->setBody('// cannot be instantiated');
 
 $getRecord = $generator->addMethod('getRecord');
 $getRecord->addParameter('code');
@@ -57,7 +61,13 @@ $getRecord->addDocument('@return array|NULL');
 $getRecord->setStatic(TRUE);
 $getRecord->setBody('return isset(self::$records[$code]) ? self::$records[$code] : NULL;');
 
-$generator->addMethod('__construct')->setVisibility('private')->setBody('// cannot be instantiated');
+$registerRecord = $generator->addMethod('registerRecord');
+$registerRecord->addParameter('code');
+$registerRecord->addParameter('details')->setTypeHint('array');
+$registerRecord->setStatic(TRUE);
+
+$defaults = array('number' => NULL, 'name' => NULL, 'decimals' => 0, 'countries' => array());
+$registerRecord->setBody('self::$records[$code = strtoupper($code)] = array(? => $code) + $details + ?;', array('code', $defaults));
 
 $contents = <<<HEREDOC
 <?php

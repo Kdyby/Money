@@ -133,7 +133,7 @@ final class Currency extends Nette\Object
 		}
 
 		if (($record = CurrencyTable::getRecord($code)) === NULL) {
-			throw new InvalidArgumentException("Currency code is not in a CurrencyTable.");
+			throw new InvalidArgumentException("Currency code '$code' is not in a CurrencyTable.");
 		}
 
 		return static::$currencies[$code] = new static($record);

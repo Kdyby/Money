@@ -38,6 +38,34 @@ class MoneyExtension extends Nette\DI\CompilerExtension implements Kdyby\Doctrin
 {
 
 	/**
+	 * @var array
+	 */
+	public $defaults = array(
+		'currencies' => array(),
+	);
+
+
+
+	public function afterCompile(Code\ClassType $class)
+	{
+		$config = $this->getConfig($this->defaults);
+
+		if (!empty($config['currencies'])) {
+			$init = $class->addMethod('_kdyby_initialize_currencies');
+			$init->setVisibility('protected');
+
+			foreach ($config['currencies'] as $code => $details) {
+				$details = Nette\DI\Config\Helpers::merge($details, array('number' => NULL, 'name' => NULL, 'decimals' => 0, 'countries' => array()));
+				$init->addBody('?(?, ?);', array(new Code\PhpLiteral('Kdyby\Money\CurrencyTable::registerRecord'), strtoupper($code), $details));
+			}
+
+			$class->methods['initialize']->addBody('$this->_kdyby_initialize_currencies();');
+		}
+	}
+
+
+
+	/**
 	 * Returns array of typeName => typeClass.
 	 *
 	 * @return array

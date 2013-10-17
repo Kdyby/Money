@@ -24,7 +24,7 @@ final class CurrencyTable extends Nette\Object
 	const VERSION = '2013-04-09';
 
 
-	public static $records = array(
+	private static $records = array(
 		'AFN' => array(
 			'code' => 'AFN',
 			'number' => '971',
@@ -1343,6 +1343,12 @@ final class CurrencyTable extends Nette\Object
 	);
 
 
+	private function __construct()
+	{
+		// cannot be instantiated
+	}
+
+
 	/**
 	 * @param string $code 3 letter ISO 4217 code
 	 * @return array|NULL
@@ -1353,9 +1359,14 @@ final class CurrencyTable extends Nette\Object
 	}
 
 
-	private function __construct()
+	public static function registerRecord($code, array $details)
 	{
-		// cannot be instantiated
+		self::$records[$code = strtoupper($code)] = array('code' => $code) + $details + array(
+			'number' => NULL,
+			'name' => NULL,
+			'decimals' => 0,
+			'countries' => array(),
+		);
 	}
 
 }
