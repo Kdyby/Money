@@ -42,7 +42,21 @@ class MoneyExtension extends Nette\DI\CompilerExtension implements Kdyby\Doctrin
 	 */
 	public $defaults = array(
 		'currencies' => array(),
+		'rates' => array(
+			'static' => array(),
+		),
 	);
+
+
+
+	public function loadConfiguration()
+	{
+		$config = $this->getConfig($this->defaults);
+		$builder = $this->getContainerBuilder();
+
+		$builder->addDefinition($this->prefix('rates'))
+			->setClass('Kdyby\Money\Exchange\StaticExchanger', array($config['rates']['static']));
+	}
 
 
 
