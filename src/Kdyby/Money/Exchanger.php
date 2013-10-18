@@ -30,7 +30,7 @@ abstract class Exchanger extends Nette\Object
 	public function convert(Money $money, Currency $to)
 	{
 		$rate = $this->calculateExchangeRate($from = $money->getCurrency(), $to);
-		$absolute = ($money / pow(10, $from->getDecimals())) * $rate;
+		$absolute = (((string) $money) / pow(10, $from->getDecimals())) * $rate;
 
 		return new Money(ceil($absolute * pow(10, $to->getDecimals())), $to);
 	}
