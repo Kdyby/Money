@@ -47,7 +47,7 @@ class Money extends Nette\Object
 			$this->amount = (int) $amount->amount;
 			$this->decimals = (int) $amount->decimals;
 
-		} else {
+		} elseif ($amount !== NULL) {
 			if (number_format($amount, 0, '', '') !== (string)$amount) {
 				throw new InvalidArgumentException("Only whole numbers are allowed, $amount given.");
 			}
