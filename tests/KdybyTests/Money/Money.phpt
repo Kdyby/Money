@@ -30,12 +30,20 @@ class MoneyTest extends Tester\TestCase
 	public function dataDecimals_valid()
 	{
 		return array(
+			array(0.0, 0, 0, '0'),
+			array(-0.0, 0, 0, '0'),
 			array(1, 0, 1, '1'),
+			array(-1, -0, 1, '-1'),
 			array(10, 0, 10, '10'),
+			array(-10, -0, 10, '-10'),
 			array(10000, 100, 0, '10000'),
+			array(-10000, -100, 0, '-10000'),
 			array(10001, 100, 1, '10001'),
+			array(-10001, -100, 1, '-10001'),
 			array(10010, 100, 10, '10010'),
+			array(-10010, -100, 10, '-10010'),
 			array(10010.0, 100, 10, '10010'),
+			array(-10010.0, -100, 10, '-10010'),
 		);
 	}
 

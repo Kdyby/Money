@@ -23,12 +23,17 @@ class Money extends Nette\Object
 	/**
 	 * @var integer
 	 */
-	private $amount;
+	private $amount = 0;
 
 	/**
 	 * @var integer
 	 */
-	private $decimals;
+	private $sign = 1;
+
+	/**
+	 * @var integer
+	 */
+	private $decimals = 0;
 
 	/**
 	 * @var Currency
@@ -44,20 +49,22 @@ class Money extends Nette\Object
 		if ($amount instanceof Money) {
 			$this->assertSameCurrency($amount);
 
+			$this->sign = (int) $amount->sign;
 			$this->amount = (int) $amount->amount;
 			$this->decimals = (int) $amount->decimals;
 
-		} elseif ($amount !== NULL) {
+		} elseif ($amount !== NULL && abs($amount) != 0) {
 			if (number_format($amount, 0, '', '') !== (string)$amount) {
 				throw new InvalidArgumentException("Only whole numbers are allowed, $amount given.");
 			}
 
+			$this->sign = (abs($amount) === $amount ? 1 : -1);
 			if ($currency->getDecimals() > 0) {
-				$this->decimals = (int) (substr($amount, -($currency->getDecimals())) ?: 0);
-				$amount = substr($amount, 0, -($currency->getDecimals()));
+				$this->decimals = abs((int) (substr($amount, -($currency->getDecimals())) ?: 0));
+				$amount = substr($amount, 0, -($currency->getDecimals())) ?: 0;
 			}
 
-			$this->amount = (int) ($amount ?: 0);
+			$this->amount = abs((int) ($amount ?: 0));
 		}
 	}
 
@@ -68,7 +75,7 @@ class Money extends Nette\Object
 	 */
 	public function getAmount()
 	{
-		return (int) $this->amount;
+		return $this->sign * (int) $this->amount;
 	}
 
 
@@ -173,7 +180,7 @@ class Money extends Nette\Object
 	 */
 	public function __toString()
 	{
-		return (string) ($this->amount * pow(10, $this->currency->decimals) + $this->decimals);
+		return (string) ($this->sign * ($this->amount * pow(10, $this->currency->decimals) + $this->decimals));
 	}
 
 
