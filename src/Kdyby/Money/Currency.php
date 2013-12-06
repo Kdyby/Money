@@ -22,7 +22,7 @@ use Nette;
  * @property-read string $number
  * @property-read string $code
  */
-final class Currency extends Nette\Object
+final class Currency extends Nette\Object implements ICurrency
 {
 
 	/**
