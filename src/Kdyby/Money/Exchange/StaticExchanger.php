@@ -12,7 +12,6 @@ namespace Kdyby\Money\Exchange;
 
 use Kdyby;
 use Kdyby\Money\Currency;
-use Kdyby\Money\Money;
 use Nette;
 
 
