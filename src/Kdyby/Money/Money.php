@@ -36,13 +36,13 @@ class Money extends Nette\Object
 	private $decimals = 0;
 
 	/**
-	 * @var Currency
+	 * @var ICurrency
 	 */
 	private $currency;
 
 
 
-	public function __construct($amount, Currency $currency)
+	public function __construct($amount, ICurrency $currency)
 	{
 		$this->currency = $currency;
 
@@ -91,7 +91,7 @@ class Money extends Nette\Object
 
 
 	/**
-	 * @return Currency
+	 * @return ICurrency
 	 */
 	public function getCurrency()
 	{
@@ -189,7 +189,7 @@ class Money extends Nette\Object
 	{
 		if ($value instanceof Money && $value->currency !== $this->currency) {
 			throw new InvalidArgumentException(
-				"Given value has currency {$value->currency->code}, but {$this->currency->code} was expected. " .
+				"Given value has currency {$value->currency->getCode()}, but {$this->currency->getCode()} was expected. " .
 				"To operate on these two objects, use currency table and convert the value first."
 			);
 		}
