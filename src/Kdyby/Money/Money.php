@@ -180,7 +180,7 @@ class Money extends Nette\Object
 	 */
 	public function __toString()
 	{
-		return (string) ($this->sign * ($this->amount * pow(10, $this->currency->decimals) + $this->decimals));
+		return (string) ($this->sign * ($this->amount * pow(10, $this->currency->getDecimals()) + $this->decimals));
 	}
 
 
