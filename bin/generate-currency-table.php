@@ -89,5 +89,5 @@ use Nette;
 $generator
 HEREDOC;
 
-file_put_contents(__DIR__ . '/../src/Kdyby/Money/CurrencyTable.php', $contents);
+file_put_contents(__DIR__ . '/../src/Kdyby/Money/CurrencyTable.php', str_replace("\r\n", "\n", $contents));
 

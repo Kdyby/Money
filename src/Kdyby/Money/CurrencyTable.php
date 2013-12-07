@@ -13,6 +13,7 @@ namespace Kdyby\Money;
 use Nette;
 
 
+
 /**
  * This class is generated from data provided by ISO 4217 Maintenance Agency
  * Note: Funds, testing values and metals are not present.
@@ -20,7 +21,7 @@ use Nette;
 final class CurrencyTable extends Nette\Object
 {
 
-	const VERSION = '2013-04-09';
+	const VERSION = '2013-11-07';
 
 
 	private static $records = array(
@@ -372,7 +373,7 @@ final class CurrencyTable extends Nette\Object
 		'CLF' => array(
 			'code' => 'CLF',
 			'number' => '990',
-			'name' => 'Unidades de fomento',
+			'name' => 'Unidad de Fomento',
 			'decimals' => 0,
 			'countries' => array('CHILE'),
 		),
@@ -819,7 +820,7 @@ final class CurrencyTable extends Nette\Object
 			'name' => 'Denar',
 			'decimals' => 2,
 			'countries' => array(
-				'MACEDONIA, THE FORMER YUGOSLAV REPUBLIC OF',
+				"MACEDONIA, THE FORMER \nYUGOSLAV REPUBLIC OF",
 			),
 		),
 		'MGA' => array(
@@ -1040,7 +1041,7 @@ final class CurrencyTable extends Nette\Object
 			'name' => 'Saint Helena Pound',
 			'decimals' => 2,
 			'countries' => array(
-				'SAINT HELENA, ASCENSION AND TRISTAN DA CUNHA',
+				"SAINT HELENA, ASCENSION AND \nTRISTAN DA CUNHA",
 			),
 		),
 		'WST' => array(
