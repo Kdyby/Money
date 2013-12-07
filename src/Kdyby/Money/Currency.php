@@ -112,6 +112,16 @@ final class Currency extends Nette\Object implements ICurrency
 
 
 	/**
+	 * @return int
+	 */
+	public function getScale()
+	{
+		return pow(10, $this->decimals);
+	}
+
+
+
+	/**
 	 * @return string[]
 	 */
 	public function getCountries()
@@ -137,6 +147,28 @@ final class Currency extends Nette\Object implements ICurrency
 		}
 
 		return static::$currencies[$code] = new static($record);
+	}
+
+
+
+	/**
+	 * @param  int
+	 * @return int
+	 */
+	public function scaleAmount($amount)
+	{
+		return (int) ($amount * $this->getScale());
+	}
+
+
+
+	/**
+	 * @param  int
+	 * @return float
+	 */
+	public function unscaleAmount($amount)
+	{
+		return $amount / $this->getScale();
 	}
 
 
