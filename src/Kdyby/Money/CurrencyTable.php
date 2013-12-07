@@ -13,7 +13,6 @@ namespace Kdyby\Money;
 use Nette;
 
 
-
 /**
  * This class is generated from data provided by ISO 4217 Maintenance Agency
  * Note: Funds, testing values and metals are not present.
