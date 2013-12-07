@@ -58,7 +58,7 @@ class Money extends Nette\Object
 				throw new InvalidArgumentException("Only whole numbers are allowed, $amount given.");
 			}
 
-			$this->sign = (abs($amount) === $amount ? 1 : -1);
+			$this->sign = (abs($amount) == $amount ? 1 : -1);
 			if ($currency->getDecimals() > 0) {
 				$this->decimals = abs((int) (substr($amount, -($currency->getDecimals())) ?: 0));
 				$amount = substr($amount, 0, -($currency->getDecimals())) ?: 0;
