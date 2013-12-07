@@ -24,26 +24,26 @@ interface ICurrency
 	 * Must be unique across all ICurrency implementations and rather short
 	 * @return string
 	 */
-	public function getCode();
+	function getCode();
 
 	/**
 	 * @return int
 	 */
-	public function getDecimals();
+	function getDecimals();
 
 	/**
 	 * @throws SingletonException
 	 */
-	public function __clone();
+	function __clone();
 
 	/**
 	 * @throws SingletonException
 	 */
-	public function __wakeup();
+	function __wakeup();
 
 	/**
 	 * @throws SingletonException
 	 */
-	public static function __set_state($an_array);
+	static function __set_state($an_array);
 
 }
