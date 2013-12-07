@@ -45,7 +45,7 @@ abstract class Exchanger extends Nette\Object
 		$fromRate = (float) $this->getRate($from) ?: 1.0;
 		$toRate = (float) $this->getRate($to) ? : 1.0;
 
-		return (float) $fromRate / (float) $toRate;
+		return $fromRate / $toRate;
 	}
 
 
