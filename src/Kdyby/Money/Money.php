@@ -21,19 +21,9 @@ class Money extends Nette\Object
 {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
-	private $amount = 0;
-
-	/**
-	 * @var integer
-	 */
-	private $sign = 1;
-
-	/**
-	 * @var integer
-	 */
-	private $decimals = 0;
+	private $amount;
 
 	/**
 	 * @var ICurrency
@@ -42,30 +32,14 @@ class Money extends Nette\Object
 
 
 
+	/**
+	 * @param self|scalar
+	 * @param ICurrency
+	 */
 	public function __construct($amount, ICurrency $currency)
 	{
 		$this->currency = $currency;
-
-		if ($amount instanceof Money) {
-			$this->assertSameCurrency($amount);
-
-			$this->sign = (int) $amount->sign;
-			$this->amount = (int) $amount->amount;
-			$this->decimals = (int) $amount->decimals;
-
-		} elseif ($amount !== NULL && abs($amount) != 0) {
-			if (number_format($amount, 0, '', '') !== (string)$amount) {
-				throw new InvalidArgumentException("Only whole numbers are allowed, $amount given.");
-			}
-
-			$this->sign = (abs($amount) == $amount ? 1 : -1);
-			if ($currency->getDecimals() > 0) {
-				$this->decimals = abs((int) (substr($amount, -($currency->getDecimals())) ?: 0));
-				$amount = substr($amount, 0, -($currency->getDecimals())) ?: 0;
-			}
-
-			$this->amount = abs((int) ($amount ?: 0));
-		}
+		$this->amount = $this->valueOf($amount);
 	}
 
 
@@ -75,17 +49,7 @@ class Money extends Nette\Object
 	 */
 	public function getAmount()
 	{
-		return $this->sign * (int) $this->amount;
-	}
-
-
-
-	/**
-	 * @return int
-	 */
-	public function getDecimals()
-	{
-		return (int) $this->decimals;
+		return (int) round($this->currency->unscaleAmount($this->amount));
 	}
 
 
@@ -101,66 +65,76 @@ class Money extends Nette\Object
 
 
 	/**
-	 * @param int|float|string|Money $amount
-	 * @return Money
+	 * @return int
+	 */
+	public function getDecimals()
+	{
+		return abs($this->amount) % $this->currency->scaleAmount(1);
+	}
+
+
+
+	/**
+	 * @param self|scalar $amount
+	 * @return self
 	 */
 	public function add($amount)
 	{
-		$this->assertSameCurrency($amount);
-
-		return new Money(self::unwrap($this) + self::unwrap($amount), $this->currency);
+		return $this->copyWithValue($this->toInt() + $this->valueOf($amount));
 	}
 
 
 
 	/**
-	 * @param int|float|string|Money $amount
-	 * @return Money
+	 * @param self|scalar $amount
+	 * @return self
 	 */
 	public function sub($amount)
 	{
-		$this->assertSameCurrency($amount);
-
-		return new Money(self::unwrap($this) - self::unwrap($amount), $this->currency);
+		return $this->copyWithValue($this->toInt() - $this->valueOf($amount));
 	}
 
 
 
 	/**
-	 * @param int|float|string|Money $amount
+	 * @param self|scalar $amount
 	 * @return bool
 	 */
 	public function equals($amount)
 	{
-		$this->assertSameCurrency($amount);
-
-		return self::unwrap($this) === self::unwrap($amount);
+		return $this->toInt() === $this->valueOf($amount);
 	}
 
 
 
 	/**
-	 * @param int|float|string|Money $amount
+	 * @param self|scalar $amount
 	 * @return bool
 	 */
 	public function largerThan($amount)
 	{
-		$this->assertSameCurrency($amount);
-
-		return self::unwrap($this) > self::unwrap($amount);
+		return $this->toInt() > $this->valueOf($amount);
 	}
 
 
 
 	/**
-	 * @param int|float|string|Money $amount
+	 * @param self|scalar $amount
 	 * @return bool
 	 */
 	public function largerOrEquals($amount)
 	{
-		$this->assertSameCurrency($amount);
+		return $this->toInt() >= $this->valueOf($amount);
+	}
 
-		return self::unwrap($this) >= self::unwrap($amount);
+
+	/**
+	 * @param  self|scalar
+	 * @return self
+	 */
+	public function copyWithValue($value)
+	{
+		return new static($value, $this->currency);
 	}
 
 
@@ -170,7 +144,27 @@ class Money extends Nette\Object
 	 */
 	public function isZero()
 	{
-		return self::unwrap($this) === 0;
+		return $this->toInt() === 0;
+	}
+
+
+
+	/**
+	 * @param int
+	 */
+	public function toInt()
+	{
+		return $this->amount;
+	}
+
+
+
+	/**
+	 * @return float
+	 */
+	public function toFloat()
+	{
+		return $this->currency->unscaleAmount($this->amount);
 	}
 
 
@@ -180,34 +174,28 @@ class Money extends Nette\Object
 	 */
 	public function __toString()
 	{
-		return (string) ($this->sign * ($this->amount * pow(10, $this->currency->getDecimals()) + $this->decimals));
-	}
-
-
-
-	private function assertSameCurrency($value)
-	{
-		if ($value instanceof Money && $value->currency !== $this->currency) {
-			throw new InvalidArgumentException(
-				"Given value has currency {$value->currency->getCode()}, but {$this->currency->getCode()} was expected. " .
-				"To operate on these two objects, use currency table and convert the value first."
-			);
-		}
+		return (string) $this->toInt();
 	}
 
 
 
 	/**
-	 * @param mixed $value
-	 * @return int
+	 * @param self|scalar
 	 */
-	private static function unwrap($value)
+	private function valueOf($value)
 	{
-		if ($value instanceof Money) {
-			return (int) $value->__toString();
+		if ($value instanceof self) {
+			if (!$value->isZero() && $this->currency !== $value->currency) {
+				throw new InvalidArgumentException(
+					"Given value has currency {$value->currency->getCode()}, but {$this->currency->getCode()} was expected. " .
+					"To operate on these two objects, use currency table and convert the value first."
+				);
+			}
+			return $value->toInt();
+		} elseif (round($value) === (float) $value) {
+			return (int) $value;
 		}
-
-		return (int) $value;
+		throw new InvalidArgumentException("Only whole numbers are allowed, $value given.");
 	}
 
 }

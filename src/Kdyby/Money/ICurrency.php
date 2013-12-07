@@ -27,23 +27,15 @@ interface ICurrency
 	function getCode();
 
 	/**
+	 * @param  int
 	 * @return int
 	 */
-	function getDecimals();
+	function scaleAmount($amount);
 
 	/**
-	 * @throws SingletonException
+	 * @param  int
+	 * @return float
 	 */
-	function __clone();
-
-	/**
-	 * @throws SingletonException
-	 */
-	function __wakeup();
-
-	/**
-	 * @throws SingletonException
-	 */
-	static function __set_state($an_array);
+	function unscaleAmount($amount);
 
 }
