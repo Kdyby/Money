@@ -21,19 +21,19 @@ class Money extends Nette\Object
 {
 
 	/**
-	 * @var integer
+	 * @var string
 	 */
-	private $amount = 0;
+	private $value = '0';
 
 	/**
 	 * @var int
 	 */
-	private $sign = 1;
+	private $amount;
 
 	/**
 	 * @var int
 	 */
-	private $decimals = 0;
+	private $decimals;
 
 	/**
 	 * @var ICurrency
@@ -42,30 +42,31 @@ class Money extends Nette\Object
 
 
 
-	public function __construct($amount, ICurrency $currency)
+	public function __construct($value, ICurrency $currency)
 	{
 		$this->currency = $currency;
 
-		if ($amount instanceof Money) {
-			$this->assertSameCurrency($amount);
+		if ($value instanceof self) {
+			$this->assertSameCurrency($value);
+			$this->value = $value->value;
+			$this->amount = $value->amount;
+			$this->decimals = $value->decimals;
 
-			$this->sign = (int) $amount->sign;
-			$this->amount = (int) $amount->amount;
-			$this->decimals = (int) $amount->decimals;
-
-		} elseif ($amount !== NULL && ($formatted = number_format($amount, 0, '', '')) !== '0') {
-			if ($formatted !== (string) $amount) {
-				throw new InvalidArgumentException("Only whole numbers are allowed, $amount given.");
+		} elseif ($value != 0) {
+			$original = $value;
+			if (!is_string($value)) {
+				$value = number_format($value, 0, '', '');
+				if ($value !== (string) $original) {
+					throw new InvalidArgumentException("Only whole numbers are allowed, $original given.");
+				}
 			}
-
-			$this->sign = $formatted[0] === '-' ? -1 : 1;
-			if (($currencyDecimals = $currency->getDecimals()) > 0) {
-				$adjustment = $this->sign === -1;
-				$this->decimals = (int) substr($formatted, -min(strlen($formatted) - $adjustment, $currencyDecimals)) ?: 0;
-				$amount = substr($formatted, $adjustment, -$currencyDecimals) ?: 0;
+			if (($decimals = strrchr($value, '.')) !== FALSE) {
+				if (rtrim($decimals, '0') !== '.') {
+					throw new InvalidArgumentException("Only whole numbers are allowed, $original given.");
+				}
+				$value = substr($value, 0, strlen($decimals));
 			}
-
-			$this->amount = (int) $amount;
+			$this->value = $value;
 		}
 	}
 
@@ -76,7 +77,8 @@ class Money extends Nette\Object
 	 */
 	public function getAmount()
 	{
-		return $this->sign * $this->amount;
+		$this->parseValue();
+		return $this->amount;
 	}
 
 
@@ -86,6 +88,7 @@ class Money extends Nette\Object
 	 */
 	public function getDecimals()
 	{
+		$this->parseValue();
 		return $this->decimals;
 	}
 
@@ -171,7 +174,7 @@ class Money extends Nette\Object
 	 */
 	public function __toString()
 	{
-		return (string) ($this->sign * ($this->amount * pow(10, $this->currency->getDecimals()) + $this->decimals));
+		return $this->value;
 	}
 
 
@@ -183,6 +186,22 @@ class Money extends Nette\Object
 				"Given value has currency {$value->currency->getCode()}, but {$this->currency->getCode()} was expected. " .
 				"To operate on these two objects, use currency table and convert the value first."
 			);
+		}
+	}
+
+
+	private function parseValue()
+	{
+		if ($this->amount === NULL) {
+			$sign = substr($this->value, 0, 1) === '-' ? -1 : 1;
+			$adjustment = $sign === -1;
+			if (($currencyDecimals = $this->currency->getDecimals()) > 0) {
+				$this->decimals = (int) substr($this->value, -min(strlen($this->value) - $adjustment, $currencyDecimals)) ?: 0;
+
+			} else {
+				$this->decimals = 0;
+			}
+			$this->amount = (int) $sign * (substr($this->value, $adjustment, -$currencyDecimals) ?: 0);
 		}
 	}
 
