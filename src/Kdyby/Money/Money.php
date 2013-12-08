@@ -26,12 +26,12 @@ class Money extends Nette\Object
 	private $amount = 0;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $sign = 1;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $decimals = 0;
 
