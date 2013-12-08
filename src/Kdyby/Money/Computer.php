@@ -7,10 +7,10 @@ use Nette;
 
 
 /**
- * @method add($a, $b)
- * @method subtract($a, $b)
- * @method multiply($a, $b)
- * @method divide($a, $b)
+ * @method mixed add(mixed $a, mixed $b)
+ * @method mixed subtract(mixed $a, mixed $b)
+ * @method mixed multiply(mixed $a, mixed $b)
+ * @method mixed divide(mixed $a, mixed $b)
  */
 class Computer extends Nette\Object
 {
