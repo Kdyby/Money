@@ -99,7 +99,7 @@ class BcMathCalculator extends Nette\Object implements Kdyby\Money\ICalculator, 
 			throw new Kdyby\Money\InvalidArgumentException('BcMathCalculator only supports conversion from string to string.');
 		}
 
-		return rtrim($value, '.0');
+		return $value;
 	}
 
 }
