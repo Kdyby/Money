@@ -135,4 +135,5 @@ class GmpCalculator extends Nette\Object implements Kdyby\Money\ICalculator, Kdy
 		$decimals = rtrim(substr($value, -$this->precision), '0');
 		return ($negative ? '-' : '') . (substr($value, 0, -$this->precision) ?: '0') . ($decimals ? '.' . $decimals : '');
 	}
+
 }
