@@ -22,9 +22,6 @@ class Computer extends Nette\Object
 	private $comparer;
 
 	/** @var array */
-	private static $cache = array();
-
-	/** @var array */
 	private $operations = array(
 		'add',
 		'subtract',
