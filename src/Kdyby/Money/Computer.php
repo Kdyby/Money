@@ -18,8 +18,8 @@ class Computer extends Nette\Object
 	/** @var ICalculator */
 	private $calculator;
 
-	/** @var IComparer */
-	private $comparer;
+	/** @var IComparator */
+	private $comparator;
 
 	/** @var array */
 	private $operations = array(
@@ -30,13 +30,13 @@ class Computer extends Nette\Object
 	);
 
 
-	public function __construct(ICalculator $calculator, IComparer $comparer = NULL)
+	public function __construct(ICalculator $calculator, IComparator $comparator = NULL)
 	{
-		if ($comparer === NULL && !$calculator instanceof IComparer) {
-			throw new InvalidArgumentException('Please provide valid comparer.');
+		if ($comparator === NULL && !$calculator instanceof IComparator) {
+			throw new InvalidArgumentException('Please provide valid comparator.');
 		}
 		$this->calculator = $calculator;
-		$this->comparer = $comparer === NULL ? $calculator : $comparer;
+		$this->comparator = $comparator === NULL ? $calculator : $comparator;
 	}
 
 

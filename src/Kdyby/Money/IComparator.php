@@ -3,7 +3,7 @@
 namespace Kdyby\Money;
 
 
-interface IComparer
+interface IComparator
 {
 
 	/**

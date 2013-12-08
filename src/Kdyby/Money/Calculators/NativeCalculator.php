@@ -6,7 +6,7 @@ use Nette;
 use Kdyby;
 
 
-class NativeCalculator extends Nette\Object implements Kdyby\Money\ICalculator, Kdyby\Money\IComparer
+class NativeCalculator extends Nette\Object implements Kdyby\Money\ICalculator, Kdyby\Money\IComparator
 {
 
 	/** @var int */
