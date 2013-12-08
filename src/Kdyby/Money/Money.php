@@ -105,6 +105,7 @@ class Money extends Nette\Object
 
 
 	/**
+	 * @deprecated
 	 * @param int|float|string|Money $amount
 	 * @return Money
 	 */
@@ -116,6 +117,7 @@ class Money extends Nette\Object
 
 
 	/**
+	 * @deprecated
 	 * @param int|float|string|Money $amount
 	 * @return Money
 	 */
@@ -127,6 +129,7 @@ class Money extends Nette\Object
 
 
 	/**
+	 * @deprecated
 	 * @param int|float|string|Money $amount
 	 * @return bool
 	 */
@@ -138,6 +141,7 @@ class Money extends Nette\Object
 
 
 	/**
+	 * @deprecated
 	 * @param int|float|string|Money $amount
 	 * @return bool
 	 */
@@ -149,6 +153,7 @@ class Money extends Nette\Object
 
 
 	/**
+	 * @deprecated
 	 * @param int|float|string|Money $amount
 	 * @return bool
 	 */
@@ -160,6 +165,7 @@ class Money extends Nette\Object
 
 
 	/**
+	 * @deprecated
 	 * @return bool
 	 */
 	public function isZero()
