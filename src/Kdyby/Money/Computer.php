@@ -19,10 +19,10 @@ class Computer extends Nette\Object
 {
 
 	/** @var ICalculator */
-	private $calculator;
+	protected $calculator;
 
 	/** @var IComparator */
-	private $comparator;
+	protected $comparator;
 
 	/** @var array */
 	private $operations = array(
@@ -54,8 +54,7 @@ class Computer extends Nette\Object
 	public function __call($name, $arguments)
 	{
 		if (in_array($name, $this->operations, TRUE)) {
-			$result = call_user_func_array(array($this->calculator, $name), $this->convertArguments($arguments));
-			return $this->calculator->convertToScalar($result);
+			return $this->convertToResult(call_user_func_array(array($this->calculator, $name), $this->convertArguments($arguments)));
 
 		} elseif (isset($this->comparisons[$name])) {
 			list($a, $b) = $this->convertArguments($arguments);
@@ -70,7 +69,13 @@ class Computer extends Nette\Object
 	}
 
 
-	private function convertArguments($arguments)
+	protected function convertToResult($value)
+	{
+		return $this->calculator->convertToScalar($value);
+	}
+
+
+	protected function convertArguments($arguments)
 	{
 		$converted = array();
 		foreach ($arguments as $argument) {

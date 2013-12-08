@@ -107,9 +107,7 @@ class Money extends Nette\Object
 	 */
 	public function add($amount)
 	{
-		$this->assertSameCurrency($amount);
-
-		return new Money(self::unwrap($this) + self::unwrap($amount), $this->currency);
+		return MoneyComputer::getInstance()->add($this, $this->createFromAmount($amount));
 	}
 
 
@@ -120,9 +118,7 @@ class Money extends Nette\Object
 	 */
 	public function sub($amount)
 	{
-		$this->assertSameCurrency($amount);
-
-		return new Money(self::unwrap($this) - self::unwrap($amount), $this->currency);
+		return MoneyComputer::getInstance()->subtract($this, $this->createFromAmount($amount));
 	}
 
 
@@ -133,9 +129,7 @@ class Money extends Nette\Object
 	 */
 	public function equals($amount)
 	{
-		$this->assertSameCurrency($amount);
-
-		return self::unwrap($this) === self::unwrap($amount);
+		return MoneyComputer::getInstance()->equals($this, $this->createFromAmount($amount));
 	}
 
 
@@ -146,9 +140,7 @@ class Money extends Nette\Object
 	 */
 	public function largerThan($amount)
 	{
-		$this->assertSameCurrency($amount);
-
-		return self::unwrap($this) > self::unwrap($amount);
+		return MoneyComputer::getInstance()->largerThan($this, $this->createFromAmount($amount));
 	}
 
 
@@ -159,9 +151,7 @@ class Money extends Nette\Object
 	 */
 	public function largerOrEquals($amount)
 	{
-		$this->assertSameCurrency($amount);
-
-		return self::unwrap($this) >= self::unwrap($amount);
+		return MoneyComputer::getInstance()->largerOrEquals($this, $this->createFromAmount($amount));
 	}
 
 
@@ -171,7 +161,7 @@ class Money extends Nette\Object
 	 */
 	public function isZero()
 	{
-		return self::unwrap($this) === 0;
+		return MoneyComputer::getInstance()->equals($this, 0);
 	}
 
 
@@ -197,18 +187,15 @@ class Money extends Nette\Object
 	}
 
 
-
-	/**
-	 * @param mixed $value
-	 * @return int
-	 */
-	private static function unwrap($value)
+	private function createFromAmount($value)
 	{
-		if ($value instanceof Money) {
-			return (int) $value->__toString();
-		}
+		if ($value instanceof self) {
+			$this->assertSameCurrency($value);
 
-		return (int) $value;
+		} else {
+			$value = new $this($value, $this->currency);
+		}
+		return $value;
 	}
 
 }
