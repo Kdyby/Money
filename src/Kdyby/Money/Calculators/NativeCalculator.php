@@ -6,131 +6,106 @@ use Nette;
 use Kdyby;
 
 
-class NativeCalculator extends Nette\Object implements Kdyby\Money\ICalculator
+class NativeCalculator extends Nette\Object implements Kdyby\Money\ICalculator, Kdyby\Money\IComparer
 {
 
+	/** @var int */
+	private $precision;
+
+	/** @var int */
+	private $scale;
+
+
+	public function __construct($precision)
+	{
+		$this->precision = (int) $precision;
+		$this->scale = pow(10, $this->precision);
+	}
+
 	/**
-	 * @param float|int|string
-	 * @param float|int|string
+	 * @param float|int
+	 * @param float|int
 	 * @return float|int
 	 */
 	public function add($a, $b)
 	{
-		return $a + $b;
+		return floor($a + $b);
 	}
 
 
 	/**
-	 * @param float|int|string
-	 * @param float|int|string
+	 * @param float|int
+	 * @param float|int
 	 * @return float|int
 	 */
 	public function subtract($a, $b)
 	{
-		return $a - $b;
+		return floor($a - $b);
 	}
 
 
 	/**
-	 * @param float|int|string
-	 * @param float|int|string
-	 * @return float|int
-	 */
-	public function multiply($a, $b)
-	{
-		return $a * $b;
-	}
-
-
-	/**
-	 * @param float|int|string
-	 * @param float|int|string
+	 * @param float|int
+	 * @param float|int
 	 * @return float|int
 	 */
 	public function divide($a, $b)
 	{
-		return $a / $b;
+		return $this->precision === 0 ? floor($a / $b) : floor(($a * $this->scale) / $b);
 	}
 
 
 	/**
-	 * @param float|int|string
-	 * @param float|int|string
-	 * @return int
-	 */
-	public function modulo($a, $b)
-	{
-		return $a % $b;
-	}
-
-
-	/**
-	 * @param float|int|string
-	 * @param float|int|string
+	 * @param float|int
+	 * @param float|int
 	 * @return float|int
 	 */
-	public function power($base, $exponent)
+	public function multiply($a, $b)
 	{
-		return pow($base, $exponent);
-	}
-
-
-	/**
-	 * @param float|int|string
-	 * @param float|int|string
-	 * @param float|int|string
-	 * @return int
-	 */
-	public function powerModulo($base, $exponent, $modulo)
-	{
-		return $this->modulo($this->power($base, $exponent), $modulo);
-	}
-
-
-	/**
-	 * @param float|int|string
-	 * @return float
-	 */
-	public function squareRoot($a)
-	{
-		return sqrt($a);
+		return $this->precision === 0 ? floor($a * $b) : floor(($a * $b) / $this->scale);
 	}
 
 
 	/**
 	 * Returns -1, 0 or 1 if $a > $b, $a == $b or $a < $b.
-	 * @param float|int|string
-	 * @param float|int|string
+	 * @param float|int
+	 * @param float|int
 	 * @return int
 	 */
 	public function compare($a, $b)
 	{
-		return $a == $b ? 0
-			: $a > $b ? -1 : 1;
+		$a = number_format($a, $this->precision, '.', '');
+		$b = number_format($b, $this->precision, '.', '');
+		return $a == $b ? 0 : ($a > $b ? -1 : 1);
 	}
 
 
-	public function convertToType($value, $type)
+	/**
+	 * @inheritdoc
+	 * @return float|int
+	 */
+	public function convertFromScalar($value)
 	{
 		if (!is_numeric($value)) {
-			throw new Kdyby\Money\InvalidArgumentException("NativeCalculator only supports numeric values.");
+			throw new Kdyby\Money\InvalidArgumentException('NativeCalculator only supports numeric values.');
 		}
 
-		if (!is_scalar($value)) {
-			throw new Kdyby\Money\InvalidArgumentException("GMPCalculator only supports conversion from scalar value.");
-		}
-
-		return (string) $value;
+		return $this->precision === 0 ? floor($value) : floor($value * $this->scale);
 	}
 
 
-	public function convertFromType($value, $type)
+	/**
+	 * @inheritdoc
+	 * @param float|int
+	 * @return float|int
+	 */
+	public function convertToScalar($value)
 	{
-		if (!is_scalar($value)) {
-			throw new Kdyby\Money\InvalidArgumentException("GMPCalculator only supports conversion to scalar value.");
+		if (!is_int($value) && !is_float($value)) {
+			throw new Kdyby\Money\InvalidArgumentException('NativeCalculator only supports conversion from int and float to scalar value.');
 		}
 
-		return $value;
+		return $this->precision === 0 ? $value : $value / $this->scale;
 	}
 
 }

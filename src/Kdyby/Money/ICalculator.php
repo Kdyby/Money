@@ -6,32 +6,30 @@ namespace Kdyby\Money;
 interface ICalculator
 {
 
-	/**
-	 * Returns -1, 0 or 1 if $a > $b, $a == $b or $a < $b.
-	 * @return int
-	 */
-	function compare($a, $b);
+	/** @param int */
+	function __construct($precision);
+
+	function add($a, $b);
+
+	function divide($a, $b);
+
+	function subtract($a, $b);
+
+	function multiply($a, $b);
 
 	/**
-	 * Type is taken from function annotation.
-	 * Must throw InvalidArgumentException on unsupported $type.
-	 *
-	 * @param mixed
-	 * @param string
-	 * @throws InvalidArgumentException
+	 * Converts value to internal representation used for computations
+	 * @param float|string|int
 	 * @return mixed
+	 * @throws \Kdyby\Money\InvalidArgumentException
 	 */
-	function convertToType($value, $type);
+	function convertFromScalar($value);
 
 	/**
-	 * Type is taken from function annotation.
-	 * Must throw InvalidArgumentException on unsupported $type.
-	 *
-	 * @param mixed
-	 * @param string
-	 * @throws InvalidArgumentException
-	 * @return mixed
+	 * Converts value from internal representation to scalar value
+	 * @return float|string|int
+	 * @throws \Kdyby\Money\InvalidArgumentException
 	 */
-	function convertFromType($value, $type);
+	function convertToScalar($value);
 
 }
