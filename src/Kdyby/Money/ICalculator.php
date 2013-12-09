@@ -6,9 +6,6 @@ namespace Kdyby\Money;
 interface ICalculator
 {
 
-	/** @param int */
-	function __construct($precision);
-
 	function add($a, $b);
 
 	function divide($a, $b);
