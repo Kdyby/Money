@@ -36,6 +36,11 @@ class Money extends Nette\Object
 	private $decimals;
 
 	/**
+	 * @var string
+	 */
+	private $decimalValue;
+
+	/**
 	 * @var ICurrency
 	 */
 	private $currency;
@@ -185,6 +190,17 @@ class Money extends Nette\Object
 
 
 
+	/**
+	 * @return string
+	 */
+	public function toDecimal()
+	{
+		$this->parseValue();
+		return $this->decimalValue;
+	}
+
+
+
 	private function assertSameCurrency($value)
 	{
 		if ($value instanceof Money && $value->currency !== $this->currency) {
@@ -202,12 +218,13 @@ class Money extends Nette\Object
 			$sign = substr($this->value, 0, 1) === '-' ? -1 : 1;
 			$adjustment = $sign === -1;
 			if (($currencyDecimals = $this->currency->getDecimals()) > 0) {
-				$this->decimals = (int) substr($this->value, -min(strlen($this->value) - $adjustment, $currencyDecimals)) ?: 0;
+				$this->decimals = (int) ($decimals = substr($this->value, -min(strlen($this->value) - $adjustment, $currencyDecimals))) ?: 0;
 
 			} else {
 				$this->decimals = 0;
 			}
-			$this->amount = (int) $sign * (substr($this->value, $adjustment, -$currencyDecimals) ?: 0);
+			$this->amount = (int) $sign * (($amount = substr($this->value, $adjustment, -$currencyDecimals)) ?: 0);
+			$this->decimalValue = ($sign === -1 ? '-' : '') . ($amount ?: '0') . ($currencyDecimals > 0 ? '.' . str_pad($decimals, $currencyDecimals, '0', STR_PAD_LEFT) : '');
 		}
 	}
 

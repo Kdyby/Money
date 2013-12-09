@@ -34,7 +34,7 @@ class MoneyComputer extends Computer
 				}
 
 				$this->class = get_class($argument);
-				$argument = $this->moneyValueToString($argument->__toString());
+				$argument = $argument->toDecimal();
 			}
 			$converted[] = $this->calculator->convertFromScalar($argument);
 		}
@@ -58,21 +58,6 @@ class MoneyComputer extends Computer
 	{
 		$parts = explode('.', is_string($value) ? $value : number_format($value, $this->decimals, '.', ''), 2);
 		return $parts[0] . substr(str_pad(isset($parts[1]) ? $parts[1] : '', $this->decimals, '0', STR_PAD_RIGHT), 0, $this->decimals);
-	}
-
-
-	/**
-	 * @param string
-	 * @return string
-	 */
-	private function moneyValueToString($value)
-	{
-		if ($negative = ($value[0] === '-')) {
-			$value = substr($value, 1);
-		}
-
-		$decimals = substr(str_pad($value, $this->decimals, '0', STR_PAD_LEFT), -$this->decimals);
-		return ($negative ? '-' : '') . (substr($value, 0, -$this->decimals) ?: '0') . ($decimals ? '.' . $decimals : '');
 	}
 
 
