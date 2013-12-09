@@ -41,13 +41,13 @@ class Computer extends Nette\Object
 	);
 
 
-	public function __construct(ICalculator $calculator, IComparator $comparator = NULL)
+	public function __construct(ICalculator $calculator = NULL, IComparator $comparator = NULL)
 	{
-		if ($comparator === NULL && !$calculator instanceof IComparator) {
+		$this->calculator = $calculator === NULL ? $this->createCalculator() : $calculator;
+		if ($comparator === NULL && !$this->calculator instanceof IComparator) {
 			throw new InvalidArgumentException('Please provide valid comparator.');
 		}
-		$this->calculator = $calculator;
-		$this->comparator = $comparator === NULL ? $calculator : $comparator;
+		$this->comparator = $comparator === NULL ? $this->calculator : $comparator;
 	}
 
 
@@ -82,6 +82,20 @@ class Computer extends Nette\Object
 			$converted[] = $this->calculator->convertFromScalar($argument);
 		}
 		return $converted;
+	}
+
+
+	private function createCalculator()
+	{
+		if (function_exists('gmp_add')) {
+			return new Calculators\GmpCalculator;
+
+		} elseif (function_exists('bcadd')) {
+			return new Calculators\BcMathCalculator;
+
+		} else {
+			return new Calculators\NativeCalculator;
+		}
 	}
 
 }

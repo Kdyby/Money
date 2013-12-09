@@ -83,17 +83,7 @@ class MoneyComputer extends Computer
 	{
 		static $instance = NULL;
 		if ($instance === NULL) {
-			if (function_exists('gmp_add')) {
-				$calculator = new Calculators\GmpCalculator(8);
-
-			} elseif (function_exists('bcadd')) {
-				$calculator = new Calculators\BcMathCalculator(8);
-
-			} else {
-				$calculator = new Calculators\NativeCalculator(8);
-			}
-
-			return $instance = new static($calculator);
+			return $instance = new static;
 		}
 
 		return $instance;
