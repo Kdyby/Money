@@ -16,7 +16,7 @@ class GmpCalculator extends Nette\Object implements Kdyby\Money\ICalculator, Kdy
 	private $scale;
 
 
-	public function __construct($precision)
+	public function __construct($precision = 8)
 	{
 		$this->precision = (int) $precision;
 		$this->scale = gmp_pow(10, $this->precision);

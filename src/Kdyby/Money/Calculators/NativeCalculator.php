@@ -16,7 +16,7 @@ class NativeCalculator extends Nette\Object implements Kdyby\Money\ICalculator, 
 	private $scale;
 
 
-	public function __construct($precision)
+	public function __construct($precision = 8)
 	{
 		$this->precision = (int) $precision;
 		$this->scale = pow(10, $this->precision);

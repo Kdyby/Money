@@ -13,7 +13,7 @@ class BcMathCalculator extends Nette\Object implements Kdyby\Money\ICalculator, 
 	private $precision;
 
 
-	public function __construct($precision)
+	public function __construct($precision = 8)
 	{
 		$this->precision = (int) $precision;
 	}
