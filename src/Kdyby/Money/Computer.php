@@ -87,10 +87,10 @@ class Computer extends Nette\Object
 
 	private function createCalculator()
 	{
-		if (function_exists('gmp_add')) {
+		if (extension_loaded('gmp')) {
 			return new Calculators\GmpCalculator;
 
-		} elseif (function_exists('bcadd')) {
+		} elseif (extension_loaded('bcmath')) {
 			return new Calculators\BcMathCalculator;
 
 		} else {
