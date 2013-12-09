@@ -212,6 +212,17 @@ class Money extends Nette\Object
 
 
 
+	/**
+	 * @return float
+	 */
+	public function toInt()
+	{
+		$this->parseValue();
+		return (float) $this->decimalValue;
+	}
+
+
+
 	private function assertSameCurrency($value)
 	{
 		if ($value instanceof Money && $value->currency !== $this->currency) {
