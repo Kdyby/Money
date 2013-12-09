@@ -71,7 +71,7 @@ class MoneyComputer extends Computer
 			$value = substr($value, 1);
 		}
 
-		$decimals = rtrim(substr(str_pad($value, $this->decimals, '0', STR_PAD_LEFT), -$this->decimals), '0');
+		$decimals = substr(str_pad($value, $this->decimals, '0', STR_PAD_LEFT), -$this->decimals);
 		return ($negative ? '-' : '') . (substr($value, 0, -$this->decimals) ?: '0') . ($decimals ? '.' . $decimals : '');
 	}
 
