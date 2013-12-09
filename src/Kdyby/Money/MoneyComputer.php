@@ -60,18 +60,4 @@ class MoneyComputer extends Computer
 		return $parts[0] . substr(str_pad(isset($parts[1]) ? $parts[1] : '', $this->decimals, '0', STR_PAD_RIGHT), 0, $this->decimals);
 	}
 
-
-	/**
-	 * @deprecated
-	 */
-	public static function getInstance()
-	{
-		static $instance = NULL;
-		if ($instance === NULL) {
-			return $instance = new static;
-		}
-
-		return $instance;
-	}
-
 }

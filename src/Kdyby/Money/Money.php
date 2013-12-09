@@ -116,7 +116,7 @@ class Money extends Nette\Object
 	 */
 	public function add($amount)
 	{
-		return MoneyComputer::getInstance()->add($this, $this->createFromAmount($amount));
+		return static::getComputerInstance()->add($this, $this->createFromAmount($amount));
 	}
 
 
@@ -128,7 +128,7 @@ class Money extends Nette\Object
 	 */
 	public function sub($amount)
 	{
-		return MoneyComputer::getInstance()->subtract($this, $this->createFromAmount($amount));
+		return static::getComputerInstance()->subtract($this, $this->createFromAmount($amount));
 	}
 
 
@@ -140,7 +140,7 @@ class Money extends Nette\Object
 	 */
 	public function equals($amount)
 	{
-		return MoneyComputer::getInstance()->equals($this, $this->createFromAmount($amount));
+		return static::getComputerInstance()->equals($this, $this->createFromAmount($amount));
 	}
 
 
@@ -152,7 +152,7 @@ class Money extends Nette\Object
 	 */
 	public function largerThan($amount)
 	{
-		return MoneyComputer::getInstance()->largerThan($this, $this->createFromAmount($amount));
+		return static::getComputerInstance()->largerThan($this, $this->createFromAmount($amount));
 	}
 
 
@@ -164,7 +164,7 @@ class Money extends Nette\Object
 	 */
 	public function largerOrEquals($amount)
 	{
-		return MoneyComputer::getInstance()->largerOrEquals($this, $this->createFromAmount($amount));
+		return static::getComputerInstance()->largerOrEquals($this, $this->createFromAmount($amount));
 	}
 
 
@@ -175,7 +175,7 @@ class Money extends Nette\Object
 	 */
 	public function isZero()
 	{
-		return MoneyComputer::getInstance()->equals($this, 0);
+		return static::getComputerInstance()->equals($this, 0);
 	}
 
 
@@ -238,6 +238,20 @@ class Money extends Nette\Object
 			$value = new $this($value, $this->currency);
 		}
 		return $value;
+	}
+
+
+	/**
+	 * @deprecated
+	 */
+	private static function getComputerInstance()
+	{
+		static $instance = NULL;
+		if ($instance === NULL) {
+			return $instance = new MoneyComputer;
+		}
+
+		return $instance;
 	}
 
 }
