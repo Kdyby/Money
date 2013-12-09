@@ -6,12 +6,32 @@ namespace Kdyby\Money;
 interface ICalculator
 {
 
+	/**
+	 * @param mixed
+	 * @param mixed
+	 * @return mixed
+	 */
 	function add($a, $b);
 
+	/**
+	 * @param mixed
+	 * @param mixed
+	 * @return mixed
+	 */
 	function divide($a, $b);
 
+	/**
+	 * @param mixed
+	 * @param mixed
+	 * @return mixed
+	 */
 	function subtract($a, $b);
 
+	/**
+	 * @param mixed
+	 * @param mixed
+	 * @return mixed
+	 */
 	function multiply($a, $b);
 
 	/**
