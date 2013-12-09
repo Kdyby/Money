@@ -217,8 +217,7 @@ class Money extends Nette\Object
 	 */
 	public function toInt()
 	{
-		$this->parseValue();
-		return (float) $this->decimalValue;
+		return (int) $this->value;
 	}
 
 
