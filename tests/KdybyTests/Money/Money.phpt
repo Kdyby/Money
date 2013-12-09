@@ -79,7 +79,7 @@ class MoneyTest extends Tester\TestCase
 	{
 		Assert::throws(function () {
 			new Money(10010.1, Currency::get('CZK'));
-		}, 'Kdyby\Money\InvalidArgumentException', 'Only whole numbers are allowed, 10010.1 given.');
+		}, 'Kdyby\Money\InvalidArgumentException', 'Only integers are allowed, 10010.1 given.');
 	}
 
 
@@ -88,7 +88,7 @@ class MoneyTest extends Tester\TestCase
 	{
 		Assert::throws(function () {
 			new Money('10010.10', Currency::get('CZK'));
-		}, 'Kdyby\Money\InvalidArgumentException', 'Only whole numbers are allowed, 10010.10 given.');
+		}, 'Kdyby\Money\InvalidArgumentException', 'Only integers are allowed, 10010.10 given.');
 	}
 
 

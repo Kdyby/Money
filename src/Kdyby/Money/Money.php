@@ -57,12 +57,12 @@ class Money extends Nette\Object
 			if (!is_string($value)) {
 				$value = number_format($value, 0, '', '');
 				if ($value !== (string) $original) {
-					throw new InvalidArgumentException("Only whole numbers are allowed, $original given.");
+					throw new InvalidArgumentException("Only integers are allowed, $original given.");
 				}
 			}
 			if (($decimals = strrchr($value, '.')) !== FALSE) {
 				if (rtrim($decimals, '0') !== '.') {
-					throw new InvalidArgumentException("Only whole numbers are allowed, $original given.");
+					throw new InvalidArgumentException("Only integers are allowed, $original given.");
 				}
 				$value = substr($value, 0, strlen($decimals));
 			}
