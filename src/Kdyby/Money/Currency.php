@@ -159,7 +159,7 @@ final class Currency extends Nette\Object implements ICurrency
 	 */
 	public function scaleAmount($amount)
 	{
-		return (int) ($amount * $this->getScale());
+		return (int) round($amount * $this->getScale(), 10);
 	}
 
 
