@@ -195,9 +195,11 @@ class Money extends Nette\Object
 					"To operate on these two objects, use currency table and convert the value first."
 				);
 			}
+
 			return $value->toInt();
-		} elseif (round($value) === round((float) $value, 3)) {
-			return (int) $value;
+
+		} elseif (round($value) === round($value, 10)) {
+			return (int) round($value, 10);
 		}
 
 		throw new InvalidArgumentException("Only whole numbers are allowed, $value given.");

@@ -280,6 +280,16 @@ class MoneyTest extends Tester\TestCase
 
 
 
+	public function testFloatingPointError()
+	{
+		$money = new Money(9.45 * 100, Currency::get('CZK'));
+		Assert::same(9, $money->getAmount());
+		Assert::same(45, $money->getDecimals());
+		Assert::same('945', (string) $money);
+	}
+
+
+
 	public function testCurrencyConflictExceptions()
 	{
 		$czk = new Money(10000, Currency::get('CZK'));
