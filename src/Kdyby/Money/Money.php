@@ -192,9 +192,10 @@ class Money extends Nette\Object
 				);
 			}
 			return $value->toInt();
-		} elseif (round($value) === (float) $value) {
+		} elseif (round($value) === round((float) $value, 3)) {
 			return (int) $value;
 		}
+
 		throw new InvalidArgumentException("Only whole numbers are allowed, $value given.");
 	}
 
