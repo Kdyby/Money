@@ -35,6 +35,7 @@ class MoneyTest extends Tester\TestCase
 			array(1, 0, 1, '1'),
 			array(-1, -0, 1, '-1'),
 			array(10, 0, 10, '10'),
+			array(180, 1, 80, '180'),
 			array(-10, -0, 10, '-10'),
 			array(10000, 100, 0, '10000'),
 			array(-10000, -100, 0, '-10000'),

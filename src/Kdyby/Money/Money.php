@@ -51,7 +51,8 @@ class Money extends Nette\Object
 	 */
 	public function getAmount()
 	{
-		return (int) round($this->currency->unscaleAmount($this->amount));
+		$unscaled = $this->currency->unscaleAmount($this->amount);
+		return $unscaled < 0 ? (int) ceil($unscaled) : (int) floor($unscaled);
 	}
 
 
