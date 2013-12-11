@@ -16,6 +16,8 @@ use Nette;
 
 /**
  * @author Michal Gebauer <mishak@mishak.net>
+ * @author Filip Procházka <filip@prochazka.su>
+ * @author Ladislav Marek <ladislav@marek.su>
  *
  * @property-read int $decimals
  * @property-read string $name

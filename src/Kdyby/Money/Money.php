@@ -16,6 +16,8 @@ use Nette;
 
 /**
  * @author Michal Gebauer <mishak@mishak.net>
+ * @author Filip Procházka <filip@prochazka.su>
+ * @author Ladislav Marek <ladislav@marek.su>
  */
 class Money extends Nette\Object
 {
@@ -33,7 +35,7 @@ class Money extends Nette\Object
 
 
 	/**
-	 * @param self|scalar
+	 * @param Money|int|float|string
 	 * @param ICurrency
 	 */
 	public function __construct($amount, ICurrency $currency)
@@ -75,8 +77,8 @@ class Money extends Nette\Object
 
 
 	/**
-	 * @param self|scalar $amount
-	 * @return self
+	 * @param Money|int|float|string $amount
+	 * @return Money
 	 */
 	public function add($amount)
 	{
@@ -86,8 +88,8 @@ class Money extends Nette\Object
 
 
 	/**
-	 * @param self|scalar $amount
-	 * @return self
+	 * @param Money|int|float|string $amount
+	 * @return Money
 	 */
 	public function sub($amount)
 	{
@@ -97,7 +99,7 @@ class Money extends Nette\Object
 
 
 	/**
-	 * @param self|scalar $amount
+	 * @param Money|int|float|string $amount
 	 * @return bool
 	 */
 	public function equals($amount)
@@ -108,7 +110,7 @@ class Money extends Nette\Object
 
 
 	/**
-	 * @param self|scalar $amount
+	 * @param Money|int|float|string $amount
 	 * @return bool
 	 */
 	public function largerThan($amount)
@@ -119,7 +121,7 @@ class Money extends Nette\Object
 
 
 	/**
-	 * @param self|scalar $amount
+	 * @param Money|int|float|string $amount
 	 * @return bool
 	 */
 	public function largerOrEquals($amount)
@@ -129,8 +131,8 @@ class Money extends Nette\Object
 
 
 	/**
-	 * @param  self|scalar
-	 * @return self
+	 * @param Money|int|float|string
+	 * @return Money
 	 */
 	public function copyWithValue($value)
 	{
@@ -180,7 +182,9 @@ class Money extends Nette\Object
 
 
 	/**
-	 * @param self|scalar
+	 * @param Money|int|float|string $value
+	 * @throws InvalidArgumentException
+	 * @return int
 	 */
 	private function valueOf($value)
 	{

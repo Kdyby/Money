@@ -17,6 +17,7 @@ use Nette;
 
 /**
  * @author Filip Procházka <filip@prochazka.su>
+ * @author Ladislav Marek <ladislav@marek.su>
  */
 abstract class Exchanger extends Nette\Object
 {

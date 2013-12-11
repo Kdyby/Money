@@ -16,6 +16,7 @@ use Nette;
 
 /**
  * @author Michal Gebauer <mishak@mishak.net>
+ * @author Ladislav Marek <ladislav@marek.su>
  */
 interface ICurrency
 {
@@ -27,13 +28,13 @@ interface ICurrency
 	function getCode();
 
 	/**
-	 * @param  int
+	 * @param int
 	 * @return int
 	 */
 	function scaleAmount($amount);
 
 	/**
-	 * @param  int
+	 * @param int
 	 * @return float
 	 */
 	function unscaleAmount($amount);
