@@ -87,7 +87,7 @@ class NativeCalculator extends Nette\Object implements Kdyby\Money\ICalculator, 
 	public function convertFromScalar($value)
 	{
 		if (!is_numeric($value)) {
-			throw new Kdyby\Money\InvalidArgumentException('NativeCalculator only supports numeric values.');
+			throw new Kdyby\Money\InvalidArgumentException('NativeCalculator only supports conversion from numeric value.');
 		}
 
 		return $this->precision === 0 ? floor($value) : floor($value * $this->scale);

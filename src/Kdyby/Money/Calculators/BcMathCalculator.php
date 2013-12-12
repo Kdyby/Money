@@ -82,7 +82,7 @@ class BcMathCalculator extends Nette\Object implements Kdyby\Money\ICalculator, 
 	public function convertFromScalar($value)
 	{
 		if (!is_numeric($value)) {
-			throw new Kdyby\Money\InvalidArgumentException('BcMathCalculator only supports conversion to numeric value.');
+			throw new Kdyby\Money\InvalidArgumentException('BcMathCalculator only supports conversion from numeric value.');
 		}
 
 		return is_float($value) ? number_format($value, $this->precision, '.', '') : (string) $value;

@@ -85,7 +85,7 @@ class GmpCalculator extends Nette\Object implements Kdyby\Money\ICalculator, Kdy
 	public function convertFromScalar($value)
 	{
 		if (!is_numeric($value)) {
-			throw new Kdyby\Money\InvalidArgumentException('GmpCalculator only supports conversion to numeric value.');
+			throw new Kdyby\Money\InvalidArgumentException('GmpCalculator only supports conversion from numeric value.');
 		}
 
 		if (!is_string($value)) {
