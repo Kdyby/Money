@@ -42,6 +42,10 @@ class Currency extends Type
 
 	public function convertToPHPValue($value, AbstractPlatform $platform)
 	{
+		if ($value === NULL) {
+			return NULL;
+		}
+
 		return CurrencyObject::get($value);
 	}
 
