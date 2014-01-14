@@ -22,37 +22,37 @@ use Kdyby\Money\Currency as CurrencyObject;
 class Currency extends Type
 {
 
-    const CURRENCY = 'currency';
+	const CURRENCY = 'currency';
 
 
-    public function getName()
-    {
-        return self::CURRENCY;
-    }
+	public function getName()
+	{
+		return self::CURRENCY;
+	}
 
 
-    public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
-    {
-        return $platform->getVarcharTypeDeclarationSQL(array(
-            'length' => 3,
-            'fixed' => TRUE,
-        ));
-    }
+	public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+	{
+		return $platform->getVarcharTypeDeclarationSQL(array(
+			'length' => 3,
+			'fixed' => TRUE,
+		));
+	}
 
 
-    public function convertToPHPValue($value, AbstractPlatform $platform)
-    {
-        return CurrencyObject::get($value);
-    }
+	public function convertToPHPValue($value, AbstractPlatform $platform)
+	{
+		return CurrencyObject::get($value);
+	}
 
 
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
-    {
-        if ($value instanceof CurrencyObject) {
-            $value = $value->getCode();
-        }
+	public function convertToDatabaseValue($value, AbstractPlatform $platform)
+	{
+		if ($value instanceof CurrencyObject) {
+			$value = $value->getCode();
+		}
 
-        return $value;
-    }
+		return $value;
+	}
 
 }
