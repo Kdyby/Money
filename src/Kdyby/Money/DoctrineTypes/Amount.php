@@ -10,7 +10,6 @@
 
 namespace Kdyby\Money\DoctrineTypes;
 
-use Doctrine\DBAL\Types\DecimalType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\IntegerType;
 use Kdyby\Money\Amount as AmountObject;
@@ -32,10 +31,12 @@ class Amount extends IntegerType
 	}
 
 
+
 	public function convertToPHPValue($value, AbstractPlatform $platform)
 	{
 		return ceil($value);
 	}
+
 
 
 	public function convertToDatabaseValue($value, AbstractPlatform $platform)

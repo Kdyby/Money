@@ -11,7 +11,6 @@
 namespace Kdyby\Money;
 
 
-
 /**
  * @author Filip Procházka <filip@prochazka.su>
  */
@@ -45,7 +44,7 @@ class InvalidArgumentException extends \InvalidArgumentException implements Exce
 /**
  * @author Filip Procházka <filip@prochazka.su>
  */
-class SingletonException extends \RuntimeException implements Exception
+class ClassNotInstantiableException extends \LogicException implements Exception
 {
 
 }

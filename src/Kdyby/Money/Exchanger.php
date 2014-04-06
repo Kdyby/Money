@@ -43,7 +43,7 @@ abstract class Exchanger extends Nette\Object
 	 */
 	public function calculateExchangeRate(Currency $from, Currency $to)
 	{
-		$fromRate = (float) $this->getRate($from) ?: 1.0;
+		$fromRate = (float) $this->getRate($from) ? : 1.0;
 		$toRate = (float) $this->getRate($to) ? : 1.0;
 
 		return $fromRate / $toRate;

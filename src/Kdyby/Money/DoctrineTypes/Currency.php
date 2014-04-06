@@ -10,8 +10,8 @@
 
 namespace Kdyby\Money\DoctrineTypes;
 
-use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Types\Type;
 use Kdyby\Money;
 
 
@@ -29,6 +29,7 @@ class Currency extends Type
 	{
 		return self::CURRENCY;
 	}
+
 
 
 	public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform)

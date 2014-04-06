@@ -11,8 +11,8 @@
 namespace Kdyby\Money\DI;
 
 use Kdyby;
-use Nette;
 use Nette\PhpGenerator as Code;
+use Nette;
 
 
 
@@ -30,6 +30,8 @@ if (isset(Nette\Loaders\NetteLoader::getInstance()->renamed['Nette\Configurator'
 if (!interface_exists('Kdyby\Doctrine\DI\IDatabaseTypeProvider')) {
 	eval('namespace Kdyby\Doctrine\DI { interface IDatabaseTypeProvider {} }');
 }
+
+
 
 /**
  * @author Filip Procházka <filip@prochazka.su>
