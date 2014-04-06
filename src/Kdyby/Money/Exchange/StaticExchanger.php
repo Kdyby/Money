@@ -11,7 +11,7 @@
 namespace Kdyby\Money\Exchange;
 
 use Kdyby;
-use Kdyby\Money\ICurrency;
+use Kdyby\Money\Currency;
 use Nette;
 
 
@@ -39,10 +39,10 @@ class StaticExchanger extends Kdyby\Money\Exchanger
 
 
 	/**
-	 * @param \Kdyby\Money\ICurrency $currency
+	 * @param \Kdyby\Money\Currency $currency
 	 * @return float
 	 */
-	public function getRate(ICurrency $currency)
+	public function getRate(Currency $currency)
 	{
 		return (float) $this->rates[$currency->getCode()];
 	}

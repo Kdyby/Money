@@ -28,7 +28,7 @@ class Money extends Nette\Object
 	private $amount;
 
 	/**
-	 * @var ICurrency
+	 * @var Currency
 	 */
 	private $currency;
 
@@ -36,9 +36,9 @@ class Money extends Nette\Object
 
 	/**
 	 * @param Money|int|float|string
-	 * @param ICurrency
+	 * @param Currency
 	 */
-	public function __construct($amount, ICurrency $currency)
+	public function __construct($amount, Currency $currency)
 	{
 		$this->currency = $currency;
 		$this->amount = $this->valueOf($amount);
@@ -58,7 +58,7 @@ class Money extends Nette\Object
 
 
 	/**
-	 * @return ICurrency
+	 * @return Currency
 	 */
 	public function getCurrency()
 	{

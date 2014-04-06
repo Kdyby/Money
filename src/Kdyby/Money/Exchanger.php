@@ -25,10 +25,10 @@ abstract class Exchanger extends Nette\Object
 
 	/**
 	 * @param Money $money
-	 * @param ICurrency $to
+	 * @param Currency $to
 	 * @return Money
 	 */
-	public function convert(Money $money, ICurrency $to)
+	public function convert(Money $money, Currency $to)
 	{
 		$amount = $money->toFloat() * $this->calculateExchangeRate($money->getCurrency(), $to);
 		return new $money($to->scaleAmount($amount), $to);
@@ -37,11 +37,11 @@ abstract class Exchanger extends Nette\Object
 
 
 	/**
-	 * @param ICurrency $from
-	 * @param ICurrency $to
+	 * @param Currency $from
+	 * @param Currency $to
 	 * @return float
 	 */
-	public function calculateExchangeRate(ICurrency $from, ICurrency $to)
+	public function calculateExchangeRate(Currency $from, Currency $to)
 	{
 		$fromRate = (float) $this->getRate($from) ?: 1.0;
 		$toRate = (float) $this->getRate($to) ? : 1.0;
@@ -52,9 +52,9 @@ abstract class Exchanger extends Nette\Object
 
 
 	/**
-	 * @param ICurrency $currency
+	 * @param Currency $currency
 	 * @return float
 	 */
-	abstract public function getRate(ICurrency $currency);
+	abstract public function getRate(Currency $currency);
 
 }

@@ -24,7 +24,7 @@ use Nette;
  * @property-read string $number
  * @property-read string $code
  */
-final class Currency extends Nette\Object implements ICurrency
+final class Currency extends Nette\Object
 {
 
 	/**
