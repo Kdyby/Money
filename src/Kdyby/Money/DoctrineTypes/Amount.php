@@ -8,56 +8,39 @@
  * For the full copyright and license information, please view the file license.txt that was distributed with this source code.
  */
 
-namespace Kdyby\Money\Types;
+namespace Kdyby\Money\DoctrineTypes;
 
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\DecimalType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Kdyby\Money\Currency as CurrencyObject;
+use Doctrine\DBAL\Types\IntegerType;
+use Kdyby\Money\Amount as AmountObject;
 
 
 
 /**
  * @author Michal Gebauer <mishak@mishak.net>
  */
-class Currency extends Type
+class Amount extends IntegerType
 {
 
-	const CURRENCY = 'currency';
+	const AMOUNT = 'amount';
 
 
 	public function getName()
 	{
-		return self::CURRENCY;
-	}
-
-
-	public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
-	{
-		return $platform->getVarcharTypeDeclarationSQL(array(
-			'length' => 3,
-			'fixed' => TRUE,
-		));
+		return self::AMOUNT;
 	}
 
 
 	public function convertToPHPValue($value, AbstractPlatform $platform)
 	{
-		if ($value === NULL) {
-			return NULL;
-		}
-
-		return CurrencyObject::get($value);
+		return ceil($value);
 	}
-
 
 
 	public function convertToDatabaseValue($value, AbstractPlatform $platform)
 	{
-		if ($value instanceof CurrencyObject) {
-			$value = $value->getCode();
-		}
-
-		return $value;
+		return ceil($value);
 	}
 
 }
