@@ -33,8 +33,7 @@ class ExtensionTest extends \KdybyTests\IntegrationTestCase
 		$container = $this->createContainer();
 		$container->getByType('Kdyby\Doctrine\Connection'); // initializes the types
 
-		Assert::true(Type::getType('amount') instanceof Kdyby\Money\Types\Amount);
-		Assert::true(Type::getType('currency') instanceof Kdyby\Money\Types\Currency);
+		Assert::true(Type::getType('money') instanceof Kdyby\Money\Types\Money);
 	}
 
 }

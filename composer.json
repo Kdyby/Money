@@ -21,14 +21,13 @@
 		"issues": "https://github.com/kdyby/money/issues"
 	},
 	"require": {
-		"nette/nette": "@dev"
+		"nette/nette": "2.1.*@dev",
+		"kdyby/doctrine": "@dev"
 	},
 	"require-dev": {
 		"nette/tester": "@dev",
-		"kdyby/doctrine": "@dev",
 		"kdyby/events": "@dev",
-		"kdyby/console": "@dev",
-		"kdyby/annotations": "@dev"
+		"kdyby/console": "@dev"
 	},
 	"suggest": {
 		"kdyby/doctrine": "@dev"

@@ -20,7 +20,7 @@ use Nette;
 /**
  * @author Filip Procházka <filip@prochazka.su>
  */
-class MoneyExtension extends Nette\DI\CompilerExtension implements Kdyby\Doctrine\DI\IDatabaseTypeProvider
+class MoneyExtension extends Nette\DI\CompilerExtension implements Kdyby\Doctrine\DI\IDatabaseTypeProvider, Kdyby\Doctrine\DI\IEntityProvider
 {
 
 	/**
@@ -56,6 +56,18 @@ class MoneyExtension extends Nette\DI\CompilerExtension implements Kdyby\Doctrin
 		return array(
 			Kdyby\Money\Types\Money::MONEY => 'Kdyby\Money\Types\Money',
 		);
+	}
+
+
+
+	/**
+	 * Returns associative array of Namespace => mapping definition
+	 *
+	 * @return array
+	 */
+	public function getEntityMappings()
+	{
+		return array('Kdyby\Money' => __DIR__ . '/..');
 	}
 
 
