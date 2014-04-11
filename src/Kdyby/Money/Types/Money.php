@@ -8,40 +8,44 @@
  * For the full copyright and license information, please view the file license.txt that was distributed with this source code.
  */
 
-namespace Kdyby\Money\DoctrineTypes;
+namespace Kdyby\Money\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\IntegerType;
-use Kdyby\Money\Amount as AmountObject;
+use Kdyby\Money\Integer;
 
 
 
 /**
- * @author Michal Gebauer <mishak@mishak.net>
+ * @author Filip Procházka <filip@prochazka.su>
  */
-class Amount extends IntegerType
+class Money extends IntegerType
 {
 
-	const AMOUNT = 'amount';
+	const MONEY = 'money';
 
 
 	public function getName()
 	{
-		return self::AMOUNT;
+		return self::MONEY;
 	}
 
 
 
 	public function convertToPHPValue($value, AbstractPlatform $platform)
 	{
-		return ceil($value);
+		return $value;
 	}
 
 
 
 	public function convertToDatabaseValue($value, AbstractPlatform $platform)
 	{
-		return ceil($value);
+		if ($value instanceof Integer) {
+			return $value->toInt();
+		}
+
+		return $value;
 	}
 
 }

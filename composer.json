@@ -40,5 +40,10 @@
 		"classmap": [
 			"src/Kdyby/Money/exceptions.php"
 		]
+	},
+	"autoload-dev": {
+		"classmap": [
+			"tests/KdybyTests"
+		]
 	}
 }

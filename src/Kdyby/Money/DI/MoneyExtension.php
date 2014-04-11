@@ -11,25 +11,9 @@
 namespace Kdyby\Money\DI;
 
 use Kdyby;
+use Kdyby\Events\DI\EventsExtension;
 use Nette\PhpGenerator as Code;
 use Nette;
-
-
-
-if (!class_exists('Nette\DI\CompilerExtension')) {
-	class_alias('Nette\Config\CompilerExtension', 'Nette\DI\CompilerExtension');
-	class_alias('Nette\Config\Compiler', 'Nette\DI\Compiler');
-	class_alias('Nette\Config\Helpers', 'Nette\DI\Config\Helpers');
-}
-
-if (isset(Nette\Loaders\NetteLoader::getInstance()->renamed['Nette\Configurator']) || !class_exists('Nette\Configurator')) {
-	unset(Nette\Loaders\NetteLoader::getInstance()->renamed['Nette\Configurator']); // fuck you
-	class_alias('Nette\Config\Configurator', 'Nette\Configurator');
-}
-
-if (!interface_exists('Kdyby\Doctrine\DI\IDatabaseTypeProvider')) {
-	eval('namespace Kdyby\Doctrine\DI { interface IDatabaseTypeProvider {} }');
-}
 
 
 
@@ -43,10 +27,7 @@ class MoneyExtension extends Nette\DI\CompilerExtension implements Kdyby\Doctrin
 	 * @var array
 	 */
 	public $defaults = array(
-		'currencies' => array(),
-		'rates' => array(
-			'static' => array(),
-		),
+		'cache' => 'default'
 	);
 
 
@@ -56,27 +37,11 @@ class MoneyExtension extends Nette\DI\CompilerExtension implements Kdyby\Doctrin
 		$config = $this->getConfig($this->defaults);
 		$builder = $this->getContainerBuilder();
 
-		$builder->addDefinition($this->prefix('rates'))
-			->setClass('Kdyby\Money\Exchange\StaticExchanger', array($config['rates']['static']));
-	}
-
-
-
-	public function afterCompile(Code\ClassType $class)
-	{
-		$config = $this->getConfig($this->defaults);
-
-		if (!empty($config['currencies'])) {
-			$init = $class->addMethod('_kdyby_initialize_currencies');
-			$init->setVisibility('protected');
-
-			foreach ($config['currencies'] as $code => $details) {
-				$details = Nette\DI\Config\Helpers::merge($details, array('number' => NULL, 'name' => NULL, 'decimals' => 0, 'countries' => array()));
-				$init->addBody('?(?, ?);', array(new Code\PhpLiteral('Kdyby\Money\CurrencyTable::registerRecord'), strtoupper($code), $details));
-			}
-
-			$class->methods['initialize']->addBody('$this->_kdyby_initialize_currencies();');
-		}
+		$builder->addDefinition($this->prefix('moneyHydrationListener'))
+			->setClass('Kdyby\Money\Mapping\MoneyObjectHydrationListener', array(
+				Kdyby\DoctrineCache\DI\Helpers::processCache($this, $config['cache'], 'money'),
+			))
+			->addTag(EventsExtension::SUBSCRIBER_TAG);
 	}
 
 
@@ -89,8 +54,7 @@ class MoneyExtension extends Nette\DI\CompilerExtension implements Kdyby\Doctrin
 	public function getDatabaseTypes()
 	{
 		return array(
-			Kdyby\Money\Types\Amount::AMOUNT => 'Kdyby\Money\Types\Amount',
-			Kdyby\Money\Types\Currency::CURRENCY => 'Kdyby\Money\Types\Currency',
+			Kdyby\Money\Types\Money::MONEY => 'Kdyby\Money\Types\Money',
 		);
 	}
 

@@ -10,6 +10,7 @@
 
 namespace Kdyby\Money;
 
+use Doctrine\ORM\Mapping as ORM;
 use Nette;
 
 
@@ -19,36 +20,45 @@ use Nette;
  * @author Filip Procházka <filip@prochazka.su>
  * @author Ladislav Marek <ladislav@marek.su>
  *
+ * @ORM\Entity()
+ * @ORM\Table(name="currencies")
+ *
  * @property-read string $code
  * @property-read string $number
  * @property-read string $name
  * @property-read int $subunitsInUnit
  * @property-read string[] $countries
  */
-final class Currency extends Nette\Object
+class Currency extends Nette\Object
 {
 
 	/**
+	 * @ORM\Id()
+	 * @ORM\Column(type="string", length=15)
 	 * @var string
 	 */
 	private $code;
 
 	/**
+	 * @ORM\Column(type="string", length=15, columnDefinition="CHAR(5) NOT NULL")
 	 * @var string
 	 */
 	private $number;
 
 	/**
+	 * @ORM\Column(type="string", length=100)
 	 * @var string
 	 */
 	private $name;
 
 	/**
+	 * @ORM\Column(type="smallint", name="decimals", length=3)
 	 * @var int
 	 */
 	private $subunitsInUnit;
 
 	/**
+	 * @ORM\Column(type="json_array")
 	 * @var string[]
 	 */
 	private $countries;
@@ -139,6 +149,16 @@ final class Currency extends Nette\Object
 	public function __toString()
 	{
 		return $this->code;
+	}
+
+
+
+	/**
+	 * @return string
+	 */
+	public static function getClassName()
+	{
+		return get_called_class();
 	}
 
 }
