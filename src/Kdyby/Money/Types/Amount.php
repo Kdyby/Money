@@ -23,24 +23,24 @@ use Kdyby\Money\Amount as AmountObject;
 class Amount extends IntegerType
 {
 
-    const AMOUNT = 'amount';
+	const AMOUNT = 'amount';
 
 
-    public function getName()
-    {
-        return self::AMOUNT;
-    }
+	public function getName()
+	{
+		return self::AMOUNT;
+	}
 
 
-    public function convertToPHPValue($value, AbstractPlatform $platform)
-    {
-        return ceil($value);
-    }
+	public function convertToPHPValue($value, AbstractPlatform $platform)
+	{
+		return ceil($value);
+	}
 
 
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
-    {
-        return ceil($value);
-    }
+	public function convertToDatabaseValue($value, AbstractPlatform $platform)
+	{
+		return ceil($value);
+	}
 
 }

@@ -50,6 +50,7 @@ class Currency extends Type
 	}
 
 
+
 	public function convertToDatabaseValue($value, AbstractPlatform $platform)
 	{
 		if ($value instanceof CurrencyObject) {
