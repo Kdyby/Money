@@ -21,13 +21,8 @@ use Nette;
  *
  * @property Currency $currency
  */
-class Money extends Nette\Object
+class Money extends Integer
 {
-
-	/**
-	 * @var int
-	 */
-	private $amount;
 
 	/**
 	 * @var Currency
@@ -35,27 +30,30 @@ class Money extends Nette\Object
 	private $currency;
 
 
+
+	/**
+	 * @param int $amount in currency subunit
+	 * @param Currency $currency
+	 */
+	public function __construct($amount, Currency $currency)
+	{
+		parent::__construct($amount);
+		$this->currency = $currency;
+	}
+
+
+
 	/**
 	 * @param float|int|string amount in currency main unit (fraction part is in subunit)
 	 * @param Currency
 	 * @return Money
 	 */
-	public static function fromNumber($amount, Currency $currency)
+	public static function fromFloat($amount, Currency $currency)
 	{
 		$amount = round($amount * $currency->getSubunitsInUnit());
 		return new static(Math::parseInt($amount), $currency);
 	}
 
-
-	/**
-	 * @param int amount in currency subunit
-	 * @param Currency
-	 */
-	public function __construct($amount, Currency $currency)
-	{
-		$this->currency = $currency;
-		$this->amount = Math::parseInt($amount);
-	}
 
 
 	/**
@@ -69,54 +67,6 @@ class Money extends Nette\Object
 
 	/********************* arithmetic *********************/
 
-
-	/**
-	 * @param Money|int
-	 * @return Money
-	 */
-	public function add($amount)
-	{
-		return $this->copyWithAmount($this->toInt() + $this->valueToInt($amount));
-	}
-
-
-	/**
-	 * @param Money|int
-	 * @return Money
-	 */
-	public function sub($amount)
-	{
-		return $this->copyWithAmount($this->toInt() - $this->valueToInt($amount));
-	}
-
-
-	/**
-	 * @param Money|int
-	 * @return Money
-	 */
-	public function mul($amount)
-	{
-		return $this->copyWithAmount($this->toInt() * $this->valueToInt($amount));
-	}
-
-
-	/**
-	 * @param Money|int
-	 * @return Money
-	 */
-	public function div($amount)
-	{
-		return $this->copyWithAmount(Math::truncDiv($this->toInt(), $this->valueToInt($amount)));
-	}
-
-
-	/**
-	 * @return Money
-	 */
-	public function negated()
-	{
-		return $this->copyWithAmount(-$this->amount);
-	}
 
 
 	/**
@@ -138,90 +88,19 @@ class Money extends Nette\Object
 	}
 
 
-	/********************* comparing *********************/
-
-
-	/**
-	 * =
-	 * @param Money|int
-	 * @return bool
-	 */
-	public function equals($amount)
-	{
-		return $this->toInt() === $this->valueToInt($amount);
-	}
-
-
-	/**
-	 * <
-	 * @param Money|int
-	 * @return bool
-	 */
-	public function lessThan($amount)
-	{
-		return $this->toInt() < $this->valueToInt($amount);
-	}
-
-
-	/**
-	 * >
-	 * @param Money|int
-	 * @return bool
-	 */
-	public function largerThan($amount)
-	{
-		return $this->toInt() > $this->valueToInt($amount);
-	}
-
-
-	/**
-	 * <=
-	 * @param Money|int
-	 * @return bool
-	 */
-	public function lessOrEquals($amount)
-	{
-		return $this->toInt() <= $this->valueToInt($amount);
-	}
-
-
-	/**
-	 * >=
-	 * @param Money|int
-	 * @return bool
-	 */
-	public function largerOrEquals($amount)
-	{
-		return $this->toInt() >= $this->valueToInt($amount);
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isZero()
-	{
-		return $this->toInt() === 0;
-	}
-
 
 	/********************* converting *********************/
 
 
-	/**
-	 * @param self|int|string|float
-	 * @return int
-	 */
-	private function valueToInt($arg)
+
+	protected function valueToInt($arg)
 	{
-		if ($arg instanceof self) {
-			if ($this->currency !== $arg->currency) {
-				throw new InvalidArgumentException();
-			}
-			return $arg->toInt();
+		if ($arg instanceof self && $this->currency !== $arg->currency) {
+			throw new InvalidArgumentException();
 		}
-		return Math::parseInt($arg);
+		return parent::valueToInt($arg);
 	}
+
 
 
 	/**
@@ -233,14 +112,6 @@ class Money extends Nette\Object
 		return new static($value, $this->currency);
 	}
 
-
-	/**
-	 * @param int
-	 */
-	public function toInt()
-	{
-		return $this->amount;
-	}
 
 
 	/**
