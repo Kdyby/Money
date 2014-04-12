@@ -123,7 +123,12 @@ class MoneyObjectHydrationListener extends Nette\Object implements Kdyby\Events\
 			$column = $this->annotationReader->getPropertyAnnotation($property, 'Doctrine\ORM\Mapping\Column');
 
 			if (empty($column->options['currency'])) {
-				throw MetadataException::missingCurrencyReference($property);
+				if ($class->hasAssociation('currency')) {
+					$column->options['currency'] = 'currency'; // default association name
+
+				} else {
+					throw MetadataException::missingCurrencyReference($property);
+				}
 			}
 
 			if (!$class->hasAssociation($column->options['currency'])) {
