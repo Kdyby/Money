@@ -52,7 +52,7 @@ class Currency extends Nette\Object
 	private $name;
 
 	/**
-	 * @ORM\Column(type="smallint", name="decimals", length=3)
+	 * @ORM\Column(type="integer", name="subunits_in_unit", length=3)
 	 * @var int
 	 */
 	private $subunitsInUnit;
@@ -69,7 +69,7 @@ class Currency extends Nette\Object
 	 * @param string $code
 	 * @param string $number
 	 * @param string $name
-	 * @param string $subunitsInUnit
+	 * @param int $subunitsInUnit
 	 * @param array $countries
 	 */
 	public function __construct($code, $number, $name, $subunitsInUnit = 100, array $countries = array())
@@ -150,7 +150,6 @@ class Currency extends Nette\Object
 	{
 		return $this->code;
 	}
-
 
 
 	/**

@@ -35,7 +35,7 @@ foreach ($xml->CcyTbl->children() as $entry) {
 			'code' => $code,
 			'name' => (string) $entry->CcyNm,
 			'number' => (string)  $entry->CcyNbr,
-			'decimals' => (int) $entry->CcyMnrUnts,
+			'subunits_in_unit' => pow(10, (int) $entry->CcyMnrUnts),
 			'countries' => [ (string) $entry->CtryNm ],
 		);
 
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS $tableName (
   `code` varchar(15) NOT NULL,
   `name` varchar(100) NOT NULL,
   `number` char(5) NOT NULL,
-  `decimals` smallint(3) NOT NULL,
+  `subunits_in_unit` int(11) NOT NULL,
   `countries` text NOT NULL,
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -78,7 +78,9 @@ fwrite($sqlDump, "INSERT INTO $tableName (" . implode(', ', $columns) . ") VALUE
 $i = count($currencies);
 foreach ($currencies as $currency) {
 	$currency['countries'] = json_encode($currency['countries']);
-	$values = array_map(array($pdo, 'quote'), $currency);
+	$values = array_map(function ($value) use ($pdo) {
+		return is_integer($value) ? (int) $value : $pdo->quote($value);
+	}, $currency);
 	fwrite($sqlDump, "(" . implode(', ', $values) . ")" . (--$i > 0 ? ',' : '') . "\n");
 }
 
