@@ -11,7 +11,6 @@
 namespace Kdyby\Money;
 
 
-
 /**
  * @author Filip Procházka <filip@prochazka.su>
  */
@@ -45,7 +44,31 @@ class InvalidArgumentException extends \InvalidArgumentException implements Exce
 /**
  * @author Filip Procházka <filip@prochazka.su>
  */
-class SingletonException extends \RuntimeException implements Exception
+class ClassNotInstantiableException extends \LogicException implements Exception
 {
+
+}
+
+
+
+/**
+ * @author Filip Procházka <filip@prochazka.su>
+ */
+class MetadataException extends \LogicException implements Exception
+{
+
+	public static function missingCurrencyReference(\ReflectionProperty $refl)
+	{
+		$property = $refl->getDeclaringClass()->getName() . '::$' . $refl->getName();
+		return new static("Property $property of type Money is missing reference to currency field. You can specify it using @ORM\\Column(options={\"currency\":\"fieldName\"})");
+	}
+
+
+
+	public static function invalidCurrencyReference(\ReflectionProperty $refl)
+	{
+		$property = $refl->getDeclaringClass()->getName() . '::$' . $refl->getName();
+		return new static("Property $property of type Money has invalid currency reference in it's Column options. It must be a valid association to " . Currency::getClassName() . " entity.");
+	}
 
 }

@@ -10,50 +10,39 @@
 
 namespace Kdyby\Money\Types;
 
-use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Kdyby\Money\Currency as CurrencyObject;
+use Doctrine\DBAL\Types\IntegerType;
+use Kdyby\Money\Integer;
 
 
 
 /**
- * @author Michal Gebauer <mishak@mishak.net>
+ * @author Filip Procházka <filip@prochazka.su>
  */
-class Currency extends Type
+class Money extends IntegerType
 {
 
-	const CURRENCY = 'currency';
+	const MONEY = 'money';
 
 
 	public function getName()
 	{
-		return self::CURRENCY;
+		return self::MONEY;
 	}
 
-
-	public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
-	{
-		return $platform->getVarcharTypeDeclarationSQL(array(
-			'length' => 3,
-			'fixed' => TRUE,
-		));
-	}
 
 
 	public function convertToPHPValue($value, AbstractPlatform $platform)
 	{
-		if ($value === NULL) {
-			return NULL;
-		}
-
-		return CurrencyObject::get($value);
+		return $value;
 	}
+
 
 
 	public function convertToDatabaseValue($value, AbstractPlatform $platform)
 	{
-		if ($value instanceof CurrencyObject) {
-			$value = $value->getCode();
+		if ($value instanceof Integer) {
+			return $value->toInt();
 		}
 
 		return $value;

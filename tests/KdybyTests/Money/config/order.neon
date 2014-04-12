@@ -1,0 +1,3 @@
+doctrine:
+	metadata:
+		KdybyTests\Money: %appDir%/KdybyTests/Money/models

@@ -18,47 +18,46 @@ use Nette;
  * @author Michal Gebauer <mishak@mishak.net>
  * @author Filip Procházka <filip@prochazka.su>
  * @author Ladislav Marek <ladislav@marek.su>
+ *
+ * @property Currency $currency
  */
-class Money extends Nette\Object
+class Money extends Integer
 {
 
 	/**
-	 * @var int
-	 */
-	private $amount;
-
-	/**
-	 * @var ICurrency
+	 * @var Currency
 	 */
 	private $currency;
 
 
 
 	/**
-	 * @param Money|int|float|string
-	 * @param ICurrency
+	 * @param int $amount in currency subunit
+	 * @param Currency $currency
 	 */
-	public function __construct($amount, ICurrency $currency)
+	public function __construct($amount, Currency $currency)
 	{
+		parent::__construct($amount);
 		$this->currency = $currency;
-		$this->amount = $this->valueOf($amount);
 	}
 
 
 
 	/**
-	 * @return int
+	 * @param float|int|string amount in currency main unit (fraction part is in subunit)
+	 * @param Currency
+	 * @return Money
 	 */
-	public function getAmount()
+	public static function fromFloat($amount, Currency $currency)
 	{
-		$unscaled = $this->currency->unscaleAmount($this->amount);
-		return $unscaled < 0 ? (int) ceil($unscaled) : (int) floor($unscaled);
+		$amount = round($amount * $currency->getSubunitsInUnit());
+		return new static(Math::parseInt($amount), $currency);
 	}
 
 
 
 	/**
-	 * @return ICurrency
+	 * @return Currency
 	 */
 	public function getCurrency()
 	{
@@ -66,98 +65,51 @@ class Money extends Nette\Object
 	}
 
 
+	/********************* arithmetic *********************/
+
+
 
 	/**
 	 * @return int
 	 */
-	public function getDecimals()
+	public function truncated()
 	{
-		return abs($this->amount) % $this->currency->scaleAmount(1);
+		return Math::quotient($this->toInt(), $this->currency->subunitsInUnit);
 	}
 
 
 
 	/**
-	 * @param Money|int|float|string $amount
+	 * @return int
+	 */
+	public function fractionPart()
+	{
+		return $this->toInt() % $this->currency->subunitsInUnit;
+	}
+
+
+
+	/********************* converting *********************/
+
+
+
+	protected function valueToInt($arg)
+	{
+		if ($arg instanceof self && $this->currency !== $arg->currency) {
+			throw new InvalidArgumentException();
+		}
+		return parent::valueToInt($arg);
+	}
+
+
+
+	/**
+	 * @param Money|int
 	 * @return Money
 	 */
-	public function add($amount)
-	{
-		return $this->copyWithValue($this->toInt() + $this->valueOf($amount));
-	}
-
-
-
-	/**
-	 * @param Money|int|float|string $amount
-	 * @return Money
-	 */
-	public function sub($amount)
-	{
-		return $this->copyWithValue($this->toInt() - $this->valueOf($amount));
-	}
-
-
-
-	/**
-	 * @param Money|int|float|string $amount
-	 * @return bool
-	 */
-	public function equals($amount)
-	{
-		return $this->toInt() === $this->valueOf($amount);
-	}
-
-
-
-	/**
-	 * @param Money|int|float|string $amount
-	 * @return bool
-	 */
-	public function largerThan($amount)
-	{
-		return $this->toInt() > $this->valueOf($amount);
-	}
-
-
-
-	/**
-	 * @param Money|int|float|string $amount
-	 * @return bool
-	 */
-	public function largerOrEquals($amount)
-	{
-		return $this->toInt() >= $this->valueOf($amount);
-	}
-
-
-	/**
-	 * @param Money|int|float|string
-	 * @return Money
-	 */
-	public function copyWithValue($value)
+	public function copyWithAmount($value)
 	{
 		return new static($value, $this->currency);
-	}
-
-
-
-	/**
-	 * @return bool
-	 */
-	public function isZero()
-	{
-		return $this->toInt() === 0;
-	}
-
-
-
-	/**
-	 * @param int
-	 */
-	public function toInt()
-	{
-		return $this->amount;
 	}
 
 
@@ -167,7 +119,7 @@ class Money extends Nette\Object
 	 */
 	public function toFloat()
 	{
-		return $this->currency->unscaleAmount($this->amount);
+		return (float) ($this->toInt() / $this->currency->subunitsInUnit);
 	}
 
 
@@ -178,32 +130,53 @@ class Money extends Nette\Object
 	public function __toString()
 	{
 		return (string) $this->toInt();
+//		return $this->truncated() . '.' . $this->paddedFractionPart(); //  . ' ' . $this->currency;
 	}
 
 
 
 	/**
-	 * @param Money|int|float|string $value
-	 * @throws InvalidArgumentException
+	 * @param string
+	 * @return string
+	 */
+	public function format($format)
+	{
+		return sprintf(
+			$format,
+			$this->truncated(),
+			$this->paddedFractionPart(),
+			$this->currency->getCode(),
+			$this->currency->getName()
+		);
+	}
+
+
+
+	private function paddedFractionPart()
+	{
+		return str_pad(abs($this->fractionPart()), $this->currency->computePrecision(), '0', STR_PAD_LEFT);
+	}
+
+
+
+	/**
+	 * @deprecated
 	 * @return int
 	 */
-	private function valueOf($value)
+	public function getAmount()
 	{
-		if ($value instanceof self) {
-			if (!$value->isZero() && $this->currency !== $value->currency) {
-				throw new InvalidArgumentException(
-					"Given value has currency {$value->currency->getCode()}, but {$this->currency->getCode()} was expected. " .
-					"To operate on these two objects, use currency table and convert the value first."
-				);
-			}
+		$unscaled = $this->getCurrency()->unscaleAmount($this->toInt());
+		return $unscaled < 0 ? (int) ceil($unscaled) : (int) floor($unscaled);
+	}
 
-			return $value->toInt();
 
-		} elseif (round($value) === round($value, 10)) {
-			return (int) round($value, 10);
-		}
 
-		throw new InvalidArgumentException("Only whole numbers are allowed, $value given.");
+	/**
+	 * @deprecated
+	 */
+	public function getDecimals()
+	{
+		return abs($this->toInt()) % $this->currency->scaleAmount(1);
 	}
 
 }
