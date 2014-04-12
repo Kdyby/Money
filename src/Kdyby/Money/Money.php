@@ -57,6 +57,22 @@ class Money extends Integer
 
 
 	/**
+	 * @param int|Integer $amount
+	 * @param Currency $currency
+	 * @return static
+	 */
+	public static function from($amount, Currency $currency)
+	{
+		if ($amount instanceof self) {
+			return new static($amount->toInt(), $currency);
+		}
+
+		return new static($amount, $currency);
+	}
+
+
+
+	/**
 	 * @return Currency
 	 */
 	public function getCurrency()
@@ -177,6 +193,17 @@ class Money extends Integer
 	public function getDecimals()
 	{
 		return abs($this->toInt()) % $this->currency->scaleAmount(1);
+	}
+
+
+
+	/**
+	 * @deprecated
+	 * @return Money
+	 */
+	public function copyWithValue($value)
+	{
+		return new static($value, $this->currency);
 	}
 
 }
