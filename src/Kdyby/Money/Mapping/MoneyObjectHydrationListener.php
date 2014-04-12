@@ -92,7 +92,7 @@ class MoneyObjectHydrationListener extends Nette\Object implements Kdyby\Events\
 	public function loadClassMetadata(LoadClassMetadataEventArgs $args)
 	{
 		$class = $args->getClassMetadata();
-		if (!$class instanceof ClassMetadata || $class->isMappedSuperclass) {
+		if (!$class instanceof ClassMetadata || $class->isMappedSuperclass || !$class->getReflectionClass()->isInstantiable()) {
 			return;
 		}
 
