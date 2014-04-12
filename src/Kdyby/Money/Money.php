@@ -59,10 +59,15 @@ class Money extends Integer
 	/**
 	 * @param int|Integer $amount
 	 * @param Currency $currency
+	 * @throws InvalidArgumentException
 	 * @return static
 	 */
-	public static function from($amount, Currency $currency)
+	public static function from($amount, Currency $currency = NULL)
 	{
+		if ($currency === NULL) {
+			throw new InvalidArgumentException("Missing argument \$currency.");
+		}
+
 		if ($amount instanceof self) {
 			return new static($amount->toInt(), $currency);
 		}
