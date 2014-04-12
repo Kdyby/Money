@@ -61,11 +61,11 @@ SET NAMES utf8;
 SET foreign_key_checks = 0;
 
 CREATE TABLE IF NOT EXISTS $tableName (
-  `code` varchar(15) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `number` char(5) NOT NULL,
-  `subunits_in_unit` int(11) NOT NULL,
-  `countries` text NOT NULL,
+  `code` VARCHAR(15) NOT NULL,
+  `name` VARCHAR(100) NOT NULL,
+  `number` CHAR(5) NOT NULL,
+  `subunits_in_unit` INT NOT NULL,
+  `countries` LONGTEXT NOT NULL COMMENT '(DC2Type:json_array)',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
