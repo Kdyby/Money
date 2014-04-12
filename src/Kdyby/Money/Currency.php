@@ -63,6 +63,12 @@ class Currency extends Nette\Object implements ICurrency
 	 */
 	private $countries;
 
+	/**
+	 * @ORM\OneToMany(targetEntity="ExchangeRate", mappedBy="currency", cascade={"persist"})
+	 * @var ExchangeRate
+	 */
+	protected $rates;
+
 
 
 	/**

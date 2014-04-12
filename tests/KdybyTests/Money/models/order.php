@@ -38,7 +38,6 @@ class OrderEntity extends BaseEntity
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="\Kdyby\Money\Currency", cascade={"persist"})
-	 * @ORM\JoinColumn(referencedColumnName="code")
 	 * @var Currency
 	 */
 	public $obscureNamedCurrencyField;
