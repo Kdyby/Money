@@ -57,6 +57,9 @@ namespace Kdyby\Money {
 		public static function registerRecord($code, array $details)
 		{
 			$code = strtoupper($code);
+			if ($details['decimals'] < 10) {
+				$details['decimals'] = pow(10, $details['decimals']);
+			}
 			self::$records[$code] = array('code' => $code) + $details + self::getRecord($code);
 		}
 
