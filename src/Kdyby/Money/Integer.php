@@ -57,7 +57,7 @@ class Integer extends Nette\Object
 
 
 	/**
-	 * @param int
+	 * @return int
 	 */
 	public function toInt()
 	{
