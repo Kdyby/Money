@@ -129,7 +129,8 @@ class Money extends Integer
 	 */
 	public function __toString()
 	{
-		return $this->truncated() . '.' . $this->paddedFractionPart() . ' ' . $this->currency;
+		return (string) $this->toInt();
+//		return $this->truncated() . '.' . $this->paddedFractionPart(); //  . ' ' . $this->currency;
 	}
 
 
@@ -154,6 +155,28 @@ class Money extends Integer
 	private function paddedFractionPart()
 	{
 		return str_pad(abs($this->fractionPart()), $this->currency->computePrecision(), '0', STR_PAD_LEFT);
+	}
+
+
+
+	/**
+	 * @deprecated
+	 * @return int
+	 */
+	public function getAmount()
+	{
+		$unscaled = $this->getCurrency()->unscaleAmount($this->toInt());
+		return $unscaled < 0 ? (int) ceil($unscaled) : (int) floor($unscaled);
+	}
+
+
+
+	/**
+	 * @deprecated
+	 */
+	public function getDecimals()
+	{
+		return abs($this->toInt()) % $this->currency->scaleAmount(1);
 	}
 
 }

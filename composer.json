@@ -37,7 +37,8 @@
 			"Kdyby\\Money\\": "src/"
 		},
 		"classmap": [
-			"src/Kdyby/Money/exceptions.php"
+			"src/Kdyby/Money/exceptions.php",
+			"src/Kdyby/Money/compatibility.php"
 		]
 	},
 	"autoload-dev": {

@@ -29,7 +29,7 @@ use Nette;
  * @property-read int $subunitsInUnit
  * @property-read string[] $countries
  */
-class Currency extends Nette\Object
+class Currency extends Nette\Object implements ICurrency
 {
 
 	/**
@@ -158,6 +158,53 @@ class Currency extends Nette\Object
 	public static function getClassName()
 	{
 		return get_called_class();
+	}
+
+
+
+	/**
+	 * @deprecated
+	 * @return int
+	 */
+	public function getDecimals()
+	{
+		return $this->computePrecision();
+	}
+
+
+
+	/**
+	 * @deprecated
+	 * @return Currency
+	 */
+	public static function get($code)
+	{
+		static $currencies = array();
+
+		$record = CurrencyTable::getRecord($code);
+		return isset($currencies[$code])
+			? $currencies[$code]
+			: $currencies[$code] = new static($record['code'], $record['number'], $record['name'], $record['decimals'], $record['countries']);
+	}
+
+
+
+	/**
+	 * @deprecated
+	 */
+	public function scaleAmount($amount)
+	{
+		return Math::parseInt(round($amount * $this->getSubunitsInUnit()));
+	}
+
+
+
+	/**
+	 * @deprecated
+	 */
+	public function unscaleAmount($amount)
+	{
+		return Math::parseInt(round($amount / $this->getSubunitsInUnit()));
 	}
 
 }

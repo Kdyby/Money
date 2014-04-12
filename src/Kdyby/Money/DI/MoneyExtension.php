@@ -27,7 +27,12 @@ class MoneyExtension extends Nette\DI\CompilerExtension implements Kdyby\Doctrin
 	 * @var array
 	 */
 	public $defaults = array(
-		'cache' => 'default'
+		'cache' => 'default',
+
+		'currencies' => array(),
+		'rates' => array(
+			'static' => array(),
+		),
 	);
 
 
@@ -42,6 +47,30 @@ class MoneyExtension extends Nette\DI\CompilerExtension implements Kdyby\Doctrin
 				Kdyby\DoctrineCache\DI\Helpers::processCache($this, $config['cache'], 'money'),
 			))
 			->addTag(EventsExtension::SUBSCRIBER_TAG);
+
+		// @deprecated
+		$builder->addDefinition($this->prefix('rates'))
+			->setClass('Kdyby\Money\Exchange\StaticExchanger', array($config['rates']['static']));
+	}
+
+
+
+	public function afterCompile(Code\ClassType $class)
+	{
+		$config = $this->getConfig($this->defaults);
+
+		// @deprecated
+		if (!empty($config['currencies'])) {
+			$init = $class->addMethod('_kdyby_initialize_currencies');
+			$init->setVisibility('protected');
+
+			foreach ($config['currencies'] as $code => $details) {
+				$details = Nette\DI\Config\Helpers::merge($details, array('number' => NULL, 'name' => NULL, 'decimals' => 0, 'countries' => array()));
+				$init->addBody('?(?, ?);', array(new Code\PhpLiteral('Kdyby\Money\CurrencyTable::registerRecord'), strtoupper($code), $details));
+			}
+
+			$class->methods['initialize']->addBody('$this->_kdyby_initialize_currencies();');
+		}
 	}
 
 
@@ -55,6 +84,8 @@ class MoneyExtension extends Nette\DI\CompilerExtension implements Kdyby\Doctrin
 	{
 		return array(
 			Kdyby\Money\Types\Money::MONEY => 'Kdyby\Money\Types\Money',
+			Kdyby\Money\Types\Amount::AMOUNT => 'Kdyby\Money\Types\Amount', // @deprecated
+			Kdyby\Money\Types\Currency::CURRENCY => 'Kdyby\Money\Types\Currency', // @deprecated
 		);
 	}
 
