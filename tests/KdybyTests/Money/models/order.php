@@ -37,7 +37,7 @@ class OrderEntity extends BaseEntity
 	public $money;
 
 	/**
-	 * @ORM\OneToOne(targetEntity="\Kdyby\Money\Currency", cascade={"persist"})
+	 * @ORM\ManyToOne(targetEntity="\Kdyby\Money\Currency", cascade={"persist"})
 	 * @ORM\JoinColumn(referencedColumnName="code")
 	 * @var Currency
 	 */
