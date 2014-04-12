@@ -181,30 +181,27 @@ class Money extends Integer
 
 
 	/**
-	 * @deprecated
-	 * @return int
+	 * @deprecated replaced with self::truncated()
 	 */
 	public function getAmount()
 	{
-		$unscaled = $this->getCurrency()->unscaleAmount($this->toInt());
-		return $unscaled < 0 ? (int) ceil($unscaled) : (int) floor($unscaled);
+		return $this->truncated();
 	}
 
 
 
 	/**
-	 * @deprecated
+	 * @deprecated replaced with abs(self::fractionPart())
 	 */
 	public function getDecimals()
 	{
-		return abs($this->toInt()) % $this->currency->scaleAmount(1);
+		return abs($this->fractionPart());
 	}
 
 
 
 	/**
-	 * @deprecated
-	 * @return Money
+	 * @deprecated replaced with self::copyWithAmount()
 	 */
 	public function copyWithValue($value)
 	{
