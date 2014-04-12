@@ -19,6 +19,13 @@ use Kdyby\Money\Money;
 
 /**
  * @ORM\Entity()
+ *
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="type", type="string")
+ * @ORM\DiscriminatorMap({
+ *    "order" = "OrderEntity",
+ *    "specific" = "SpecificOrderEntity",
+ * })
  */
 class OrderEntity extends BaseEntity
 {
@@ -34,7 +41,7 @@ class OrderEntity extends BaseEntity
 	 * @ORM\Column(type="money", options={"currency":"obscureNamedCurrencyField"})
 	 * @var Money
 	 */
-	public $money;
+	private $money;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="\Kdyby\Money\Currency", cascade={"persist"})
@@ -49,6 +56,23 @@ class OrderEntity extends BaseEntity
 		$this->money = $money;
 		$this->obscureNamedCurrencyField = $currency instanceof Currency ? $currency : new Currency($currency, '123', 'Testing currency');
 	}
+
+
+
+	public function getMoney()
+	{
+		return $this->money;
+	}
+
+}
+
+
+
+/**
+ * @ORM\Entity()
+ */
+class SpecificOrderEntity extends OrderEntity
+{
 
 }
 

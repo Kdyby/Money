@@ -72,17 +72,18 @@ class MoneyObjectHydrationListener extends Nette\Object implements Kdyby\Events\
 			return;
 		}
 
-		$class = $this->entityManager->getClassMetadata(get_class($entity));
+		foreach ($fieldsMap as $moneyField => $mapping) {
+			$currencyAssocClass = $this->entityManager->getClassMetadata($mapping['currencyClass']);
+			$moneyFieldClass = $this->entityManager->getClassMetadata($mapping['moneyFieldClass']);
 
-		foreach ($fieldsMap as $moneyField => $currencyAssociation) {
-			$currency = $class->getFieldValue($entity, $currencyAssociation);
+			$currency = $currencyAssocClass->getFieldValue($entity, $mapping['currencyAssociation']);
 			if (!$currency instanceof Kdyby\Money\Currency) {
 				continue; // sorry bro!
 			}
 
-			$amount = $class->getFieldValue($entity, $moneyField);
+			$amount = $moneyFieldClass->getFieldValue($entity, $moneyField);
 			$money = new Kdyby\Money\Money($amount, $currency);
-			$class->setFieldValue($entity, $moneyField, $money);
+			$moneyFieldClass->setFieldValue($entity, $moneyField, $money);
 		}
 	}
 
@@ -93,10 +94,6 @@ class MoneyObjectHydrationListener extends Nette\Object implements Kdyby\Events\
 		$class = $args->getClassMetadata();
 		if (!$class instanceof ClassMetadata || $class->isMappedSuperclass || !$class->getReflectionClass()->isInstantiable()) {
 			return;
-		}
-
-		if ($this->getEntityMoneyFields($class->newInstance(), $class)) {
-			$class->addEntityListener(Kdyby\Doctrine\Events::postLoadRelations, get_called_class(), Kdyby\Doctrine\Events::postLoadRelations);
 		}
 
 		$currencyMetadata = $class->getName() === 'Kdyby\Money\Currency' ? $class : $this->entityManager->getClassMetadata('Kdyby\Money\Currency');
@@ -114,6 +111,16 @@ class MoneyObjectHydrationListener extends Nette\Object implements Kdyby\Events\
 
 			$class->setAssociationOverride($assocName, $mapping);
 		}
+
+		if (!$this->getEntityMoneyFields($class->newInstance(), $class)) {
+			return;
+		}
+
+		if ($this->hasRegisteredListener($class, Kdyby\Doctrine\Events::postLoadRelations, get_called_class())) {
+			return;
+		}
+
+		$class->addEntityListener(Kdyby\Doctrine\Events::postLoadRelations, get_called_class(), Kdyby\Doctrine\Events::postLoadRelations);
 	}
 
 
@@ -123,7 +130,7 @@ class MoneyObjectHydrationListener extends Nette\Object implements Kdyby\Events\
 		$class = $class ?: $this->entityManager->getClassMetadata(get_class($entity));
 
 		if ($this->cache->contains($class->getName())) {
-			return Json::decode($this->cache->fetch($class->getName()));
+			return Json::decode($this->cache->fetch($class->getName()), Json::FORCE_ARRAY);
 		}
 
 		$moneyFields = array();
@@ -134,7 +141,8 @@ class MoneyObjectHydrationListener extends Nette\Object implements Kdyby\Events\
 				continue;
 			}
 
-			$property = $class->getReflectionClass()->getProperty($fieldName);
+			$classRefl = $class->isInheritedField($fieldName) ? new \ReflectionClass($mapping['declared']) : $class->getReflectionClass();
+			$property = $classRefl->getProperty($fieldName);
 			$column = $this->annotationReader->getPropertyAnnotation($property, 'Doctrine\ORM\Mapping\Column');
 
 			if (empty($column->options['currency'])) {
@@ -146,16 +154,38 @@ class MoneyObjectHydrationListener extends Nette\Object implements Kdyby\Events\
 				}
 			}
 
-			if (!$class->hasAssociation($column->options['currency'])) {
+			$currencyAssoc = $column->options['currency'];
+			if (!$class->hasAssociation($currencyAssoc)) {
 				throw MetadataException::invalidCurrencyReference($property);
 			}
 
-			$moneyFields[$fieldName] = $column->options['currency'];
+			$moneyFields[$fieldName] = array(
+				'moneyFieldClass' => $classRefl->getName(),
+				'currencyClass' => $class->isInheritedAssociation($currencyAssoc) ? $class->associationMappings[$currencyAssoc]['declared'] : $class->getName(),
+				'currencyAssociation' => $currencyAssoc,
+			);
 		}
 
-		$this->cache->save($class->getName(), Json::encode($moneyFields));
+		$this->cache->save($class->getName(), $moneyFields ? Json::encode($moneyFields) : FALSE);
 
 		return $moneyFields;
+	}
+
+
+
+	private static function hasRegisteredListener(ClassMetadata $class, $eventName, $listenerClass)
+	{
+		if (!isset($class->entityListeners[$eventName])) {
+			return FALSE;
+		}
+
+		foreach ($class->entityListeners[$eventName] as $listener) {
+			if ($listener['class'] === $listenerClass && $listener['method'] === $eventName) {
+				return TRUE;
+			}
+		}
+
+		return FALSE;
 	}
 
 }

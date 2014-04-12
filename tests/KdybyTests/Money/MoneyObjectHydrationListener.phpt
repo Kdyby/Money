@@ -27,14 +27,17 @@ require_once __DIR__ . '/../bootstrap.php';
 class MoneyObjectHydrationListenerTest extends \KdybyTests\IntegrationTestCase
 {
 
-	public function testFunctional()
+	/**
+	 * @dataProvider entityClasses
+	 */
+	public function testFunctional($className)
 	{
 		$container = $this->createContainer('order');
 
 		/** @var Kdyby\Doctrine\EntityManager $em */
 		$em = $container->getByType('Kdyby\Doctrine\EntityManager');
 
-		$class = $em->getClassMetadata(OrderEntity::getClassName());
+		$class = $em->getClassMetadata($className);
 
 		// assert that listener was binded to entity
 		Assert::same(array(
@@ -46,15 +49,25 @@ class MoneyObjectHydrationListenerTest extends \KdybyTests\IntegrationTestCase
 		$schema->createSchema($em->getMetadataFactory()->getAllMetadata());
 
 		// test money hydration
-		$em->persist(new OrderEntity(1000, 'CZK'));
+		$em->persist(new $className(1000, 'CZK'));
 		$em->flush();
 		$em->clear();
 
 		$currencies = $em->getRepository(Kdyby\Money\Currency::getClassName());
 
 		/** @var OrderEntity $order */
-		$order = $em->find(OrderEntity::getClassName(), 1);
+		$order = $em->find($className, 1);
 		Assert::equal(new Kdyby\Money\Money(1000, $currencies->findOneBy(array('code' => 'CZK'))), $order->money);
+	}
+
+
+
+	public function entityClasses()
+	{
+		return [
+			[OrderEntity::getClassName()],
+			[SpecificOrderEntity::getClassName()]
+		];
 	}
 
 }
