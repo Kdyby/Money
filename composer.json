@@ -22,15 +22,12 @@
 	},
 	"require": {
 		"nette/nette": "2.1.*@dev",
-		"kdyby/doctrine": "@dev"
+		"kdyby/doctrine": "~1.1@dev"
 	},
 	"require-dev": {
 		"nette/tester": "@dev",
 		"kdyby/events": "@dev",
 		"kdyby/console": "@dev"
-	},
-	"suggest": {
-		"kdyby/doctrine": "@dev"
 	},
 	"autoload": {
 		"psr-0": {
