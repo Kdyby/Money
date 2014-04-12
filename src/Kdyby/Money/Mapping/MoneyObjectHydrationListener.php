@@ -98,22 +98,22 @@ class MoneyObjectHydrationListener extends Nette\Object implements Kdyby\Events\
 
 		if ($this->getEntityMoneyFields($class->newInstance(), $class)) {
 			$class->addEntityListener(Events::postLoad, get_called_class(), Events::postLoad);
+		}
 
-			$currencyMetadata = $this->entityManager->getClassMetadata('Kdyby\Money\Currency');
-			$idColumn = $currencyMetadata->getSingleIdentifierColumnName();
+		$currencyMetadata = $class->getName() === 'Kdyby\Money\Currency' ? $class : $this->entityManager->getClassMetadata('Kdyby\Money\Currency');
+		$idColumn = $currencyMetadata->getSingleIdentifierColumnName();
 
-			foreach ($class->getAssociationNames() as $assocName) {
-				if ($class->getAssociationTargetClass($assocName) !== 'Kdyby\Money\Currency') {
-					continue;
-				}
-
-				$mapping = $class->getAssociationMapping($assocName);
-				foreach ($mapping['joinColumns'] as &$join) {
-					$join['referencedColumnName'] = $idColumn;
-				}
-
-				$class->setAssociationOverride($assocName, $mapping);
+		foreach ($class->getAssociationNames() as $assocName) {
+			if ($class->getAssociationTargetClass($assocName) !== 'Kdyby\Money\Currency') {
+				continue;
 			}
+
+			$mapping = $class->getAssociationMapping($assocName);
+			foreach ($mapping['joinColumns'] as &$join) {
+				$join['referencedColumnName'] = $idColumn;
+			}
+
+			$class->setAssociationOverride($assocName, $mapping);
 		}
 	}
 
