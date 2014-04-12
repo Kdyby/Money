@@ -66,7 +66,7 @@ class MoneyObjectHydrationListener extends Nette\Object implements Kdyby\Events\
 
 
 
-	public function postLoad($entity, LifecycleEventArgs $args)
+	public function postLoadRelations($entity, LifecycleEventArgs $args)
 	{
 		if (!$fieldsMap = $this->getEntityMoneyFields($entity)) {
 			return;
@@ -77,8 +77,7 @@ class MoneyObjectHydrationListener extends Nette\Object implements Kdyby\Events\
 		foreach ($fieldsMap as $moneyField => $currencyAssociation) {
 			$currency = $class->getFieldValue($entity, $currencyAssociation);
 			if (!$currency instanceof Kdyby\Money\Currency) {
-				$class->setFieldValue($entity, $moneyField, NULL); // sorry bro!
-				continue;
+				continue; // sorry bro!
 			}
 
 			$amount = $class->getFieldValue($entity, $moneyField);
@@ -97,7 +96,7 @@ class MoneyObjectHydrationListener extends Nette\Object implements Kdyby\Events\
 		}
 
 		if ($this->getEntityMoneyFields($class->newInstance(), $class)) {
-			$class->addEntityListener(Events::postLoad, get_called_class(), Events::postLoad);
+			$class->addEntityListener(Kdyby\Doctrine\Events::postLoadRelations, get_called_class(), Kdyby\Doctrine\Events::postLoadRelations);
 		}
 
 		$currencyMetadata = $class->getName() === 'Kdyby\Money\Currency' ? $class : $this->entityManager->getClassMetadata('Kdyby\Money\Currency');

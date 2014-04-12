@@ -10,7 +10,7 @@
 
 namespace KdybyTests\Money;
 
-use Doctrine\ORM\Events;
+use Kdyby\Doctrine\Events;
 use Doctrine\ORM\Tools\SchemaTool;
 use Kdyby;
 use Nette;
@@ -38,7 +38,7 @@ class MoneyObjectHydrationListenerTest extends \KdybyTests\IntegrationTestCase
 
 		// assert that listener was binded to entity
 		Assert::same(array(
-			Events::postLoad => array(array('class' => 'Kdyby\\Money\\Mapping\\MoneyObjectHydrationListener', 'method' => 'postLoad')),
+			Events::postLoadRelations => array(array('class' => 'Kdyby\\Money\\Mapping\\MoneyObjectHydrationListener', 'method' => Events::postLoadRelations)),
 		), $class->entityListeners);
 
 		// generate schema
