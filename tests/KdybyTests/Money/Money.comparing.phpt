@@ -35,6 +35,12 @@ test(function () use ($currency) {
 
 			Assert::same($tmpA >= $tmpB, $moneyA->largerOrEquals($moneyB));
 			Assert::same($tmpB >= $tmpA, $moneyB->largerOrEquals($moneyA));
+
+			Assert::equal(new Money(max($tmpA, $tmpB), $currency), $moneyA->max($moneyB));
+			Assert::equal(new Money(max($tmpA, $tmpB), $currency), $moneyB->max($moneyA));
+
+			Assert::equal(new Money(min($tmpA, $tmpB), $currency), $moneyA->min($moneyB));
+			Assert::equal(new Money(min($tmpA, $tmpB), $currency), $moneyB->min($moneyA));
 		}
 	};
 

@@ -185,6 +185,28 @@ class Integer extends Nette\Object
 
 
 	/**
+	 * @param static|int
+	 * @return bool
+	 */
+	public function max($amount)
+	{
+		return $this->copyWithAmount(max($this->toInt(), $this->valueToInt($amount)));
+	}
+
+
+
+	/**
+	 * @param static|int
+	 * @return bool
+	 */
+	public function min($amount)
+	{
+		return $this->copyWithAmount(min($this->toInt(), $this->valueToInt($amount)));
+	}
+
+
+
+	/**
 	 * @return bool
 	 */
 	public function isZero()
