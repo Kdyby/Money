@@ -190,6 +190,9 @@ namespace Kdyby\Money\Types {
 	use Doctrine\DBAL\Types\Type;
 
 
+	if (!class_exists('Doctrine\DBAL\Types\IntegerType')) {
+		eval('namespace Doctrine\DBAL\Types { class IntegerType {} }');
+	}
 
 	/**
 	 * @deprecated
@@ -231,6 +234,10 @@ namespace Kdyby\Money\Types {
 	}
 
 
+
+	if (!class_exists('Doctrine\DBAL\Types\Type')) {
+		eval('namespace Doctrine\DBAL\Types { class Type {} }');
+	}
 
 	/**
 	 * @deprecated

@@ -21,13 +21,11 @@
 		"issues": "https://github.com/kdyby/money/issues"
 	},
 	"require": {
-		"nette/nette": "2.1.*@dev",
-		"kdyby/doctrine": "~1.1@dev"
+		"doctrine/collections": "~1.2",
+		"nette/nette": "2.1.*@dev"
 	},
 	"require-dev": {
-		"nette/tester": "@dev",
-		"kdyby/events": "@dev",
-		"kdyby/console": "@dev"
+		"nette/tester": "@dev"
 	},
 	"autoload": {
 		"psr-0": {
