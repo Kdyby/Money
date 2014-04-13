@@ -81,8 +81,10 @@ class MoneyObjectHydrationListener extends Nette\Object implements Kdyby\Events\
 			}
 
 			$amount = $class->getFieldValue($entity, $moneyField);
-			$money = new Kdyby\Money\Money($amount, $currency);
-			$class->setFieldValue($entity, $moneyField, $money);
+			if (!$amount instanceof Kdyby\Money\Money) {
+				$money = new Kdyby\Money\Money($amount, $currency);
+				$class->setFieldValue($entity, $moneyField, $money);
+			}
 		}
 	}
 
