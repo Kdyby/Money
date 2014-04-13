@@ -52,6 +52,27 @@ class ClassNotInstantiableException extends \LogicException implements Exception
 
 
 /**
+ * The exception that is thrown when an invoked method is not supported. For scenarios where
+ * it is sometimes possible to perform the requested operation, see InvalidStateException.
+ */
+class NotSupportedException extends \LogicException implements Exception
+{
+
+}
+
+
+
+/**
+ * The exception that is thrown when a requested method or operation is deprecated.
+ */
+class DeprecatedException extends NotSupportedException implements Exception
+{
+
+}
+
+
+
+/**
  * @author Filip Procházka <filip@prochazka.su>
  */
 class MetadataException extends \LogicException implements Exception

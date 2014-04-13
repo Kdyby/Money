@@ -136,6 +136,30 @@ namespace Kdyby\Money {
 
 }
 
+namespace Kdyby\Money\DI {
+
+	use Kdyby\Money\DeprecatedException;
+	use Nette\DI\CompilerExtension;
+
+
+	if (!class_exists('Nette\DI\CompilerExtension')) {
+		eval('namespace Nette\DI { class CompilerExtension {} }');
+	}
+
+	class MoneyExtension extends CompilerExtension
+	{
+
+		public function __construct()
+		{
+			throw new DeprecatedException(
+				"If you wanna use this exception, install https://packagist.org/packages/kdyby/doctrine-money. " .
+				"This compiler extension was renamed to Kdyby\\DoctrineMoney\\DI\\MoneyExtension."
+			);
+		}
+	}
+
+}
+
 
 namespace Kdyby\Money\Exchange {
 
