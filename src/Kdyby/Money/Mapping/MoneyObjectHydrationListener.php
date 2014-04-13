@@ -19,6 +19,8 @@ use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Kdyby;
 use Kdyby\Money\MetadataException;
+use Kdyby\Money\Money;
+use Kdyby\Money\NullCurrency;
 use Nette;
 use Nette\Utils\Json;
 
@@ -78,12 +80,11 @@ class MoneyObjectHydrationListener extends Nette\Object implements Kdyby\Events\
 
 			$currency = $currencyAssocClass->getFieldValue($entity, $mapping['currencyAssociation']);
 			if (!$currency instanceof Kdyby\Money\Currency) {
-				continue; // sorry bro!
+				$currency = new NullCurrency();
 			}
 
 			$amount = $moneyFieldClass->getFieldValue($entity, $moneyField);
-			$money = new Kdyby\Money\Money($amount, $currency);
-			$moneyFieldClass->setFieldValue($entity, $moneyField, $money);
+			$moneyFieldClass->setFieldValue($entity, $moneyField, Money::from($amount, $currency));
 		}
 	}
 

@@ -51,10 +51,14 @@ class OrderEntity extends BaseEntity
 
 
 
-	public function __construct($money, $currency)
+	public function __construct($money = 0, $currency = NULL)
 	{
 		$this->money = $money;
-		$this->obscureNamedCurrencyField = $currency instanceof Currency ? $currency : new Currency($currency, '123', 'Testing currency');
+
+		if ($currency !== NULL) {
+			$this->obscureNamedCurrencyField = $currency instanceof Currency
+				? $currency : new Currency($currency, '123', 'Testing currency', 100);
+		}
 	}
 
 

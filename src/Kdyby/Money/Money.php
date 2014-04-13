@@ -35,10 +35,10 @@ class Money extends Integer
 	 * @param int $amount in currency subunit
 	 * @param Currency $currency
 	 */
-	public function __construct($amount, Currency $currency)
+	public function __construct($amount, Currency $currency = NULL)
 	{
 		parent::__construct($amount);
-		$this->currency = $currency;
+		$this->currency = $currency ?: new NullCurrency();
 	}
 
 
@@ -48,8 +48,9 @@ class Money extends Integer
 	 * @param Currency
 	 * @return Money
 	 */
-	public static function fromFloat($amount, Currency $currency)
+	public static function fromFloat($amount, Currency $currency = NULL)
 	{
+		$currency = $currency ? : new NullCurrency();
 		$amount = round($amount * $currency->getSubunitsInUnit());
 		return new static(Math::parseInt($amount), $currency);
 	}
@@ -64,9 +65,7 @@ class Money extends Integer
 	 */
 	public static function from($amount, Currency $currency = NULL)
 	{
-		if ($currency === NULL) {
-			throw new InvalidArgumentException("Missing argument \$currency.");
-		}
+		$currency = $currency ? : new NullCurrency();
 
 		if ($amount instanceof self) {
 			return new static($amount->toInt(), $currency);
