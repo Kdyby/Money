@@ -57,7 +57,7 @@ class OrderEntity extends BaseEntity
 
 		if ($currency !== NULL) {
 			$this->obscureNamedCurrencyField = $currency instanceof Currency
-				? $currency : new Currency($currency, '123', 'Testing currency', 100);
+				? $currency : new Currency($currency, 100, 'Testing currency');
 		}
 	}
 

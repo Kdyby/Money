@@ -7,7 +7,7 @@ use Tester\Assert;
 require_once __DIR__ . '/../bootstrap.php';
 
 
-$currency = new Currency('TST', 123, 'Test Currency', 100);
+$currency = new Currency('TST', 100, 'Test Currency');
 
 test(function () use ($currency) {
 	Assert::equal(new Money(0, new \Kdyby\Money\NullCurrency()), Money::from(0));

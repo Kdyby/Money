@@ -94,7 +94,7 @@ class MoneyObjectHydrationListenerTest extends \KdybyTests\IntegrationTestCase
 
 	public function dataHydratedEntities()
 	{
-		$czk = new Currency('CZK', '123', 'CZK', 100);
+		$czk = new Currency('CZK', 100);
 		$null = new NullCurrency();
 
 		return array(

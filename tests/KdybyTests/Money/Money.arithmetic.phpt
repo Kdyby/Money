@@ -7,7 +7,7 @@ use Tester\Assert;
 require_once __DIR__ . '/../bootstrap.php';
 
 
-$currency = new Currency('TST', 123, 'Test Currency', 100);
+$currency = new Currency('TST', 100, 'Test Currency');
 $money = new Money(101, $currency);
 $negMoney = new Money(-101, $currency);
 

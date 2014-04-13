@@ -73,18 +73,19 @@ class Currency extends Nette\Object implements ICurrency
 
 	/**
 	 * @param string $code
-	 * @param string $number
-	 * @param string $name
 	 * @param int $subunitsInUnit
+	 * @param string $name
+	 * @param string $number
 	 * @param array $countries
 	 */
-	public function __construct($code, $number, $name, $subunitsInUnit = 100, array $countries = array())
+	public function __construct($code, $subunitsInUnit = 100, $name = NULL, $number = NULL, array $countries = array())
 	{
 		$this->code = $code;
-		$this->number = $number;
-		$this->name = $name;
 		$this->subunitsInUnit = $subunitsInUnit;
+		$this->name = $name ?: $code;
+		$this->number = $number ?: '000';
 		$this->countries = $countries;
+		$this->rates = new ArrayCollection();
 	}
 
 

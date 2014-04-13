@@ -23,7 +23,7 @@ final class NullCurrency extends Currency
 
 	public function __construct()
 	{
-		parent::__construct('NULL', '', '', 1, array());
+		parent::__construct('NULL', 1, '', '', array());
 	}
 
 }
