@@ -123,6 +123,16 @@ class Money extends Integer
 
 
 
+	protected function valueToNumber($arg)
+	{
+		if ($arg instanceof Money && !$arg->currency->isInterchangeable($this->currency)) {
+			throw new InvalidArgumentException("Currency $arg->currency is not compatible with $this->currency.");
+		}
+		return parent::valueToNumber($arg);
+	}
+
+
+
 	/**
 	 * @param Money|int
 	 * @return Money

@@ -27,6 +27,15 @@ test(function () use ($currency) {
 });
 
 test(function () use ($currency) {
+	$test = function ($b) use ($currency) {
+		$expect = new Money(round($b), $currency);
+		$money = new Money(1, $currency);
+		Assert::equal($expect, $money->mul($b));
+		Assert::equal($expect, $money->mul((string) $b));
+	};
+	$test(1.1);
+	$test(-1.1);
+
 	$testError = function ($b) use ($currency) {
 		$money = new Money(1, $currency);
 		Assert::exception(function () use ($b, $money) {
@@ -37,8 +46,7 @@ test(function () use ($currency) {
 		}, 'Kdyby\Money\InvalidArgumentException');
 	};
 	$testError(INF);
-	$testError(1.1);
-	$testError(-1.1);
+	$testError(-INF);
 });
 
 test(function () {
