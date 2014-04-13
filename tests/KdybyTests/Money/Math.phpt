@@ -35,6 +35,23 @@ Assert::same(-100, Math::parseInt((float) -100));
 Assert::same(100, Math::parseInt('100'));
 Assert::same(-100, Math::parseInt('-100'));
 
+Assert::exception(function() {
+	Math::parseNumber(INF);
+}, 'Kdyby\Money\InvalidArgumentException', 'Provided value cannot be converted to number');
+
+Assert::exception(function() {
+	Math::parseNumber(-INF);
+}, 'Kdyby\Money\InvalidArgumentException', 'Provided value cannot be converted to number');
+
+Assert::equal(100.0, Math::parseNumber((float) 100));
+Assert::equal(-100.0, Math::parseNumber((float) -100));
+Assert::same(100, Math::parseNumber('100'));
+Assert::same(-100, Math::parseNumber('-100'));
+Assert::equal(100.1, Math::parseNumber((float) 100.1));
+Assert::equal(-100.1, Math::parseNumber((float) -100.1));
+Assert::equal(100.1, Math::parseNumber('100.1'));
+Assert::equal(-100.1, Math::parseNumber('-100.1'));
+
 Assert::same(2, Math::quotient(5, 2));
 Assert::same(-2, Math::quotient(-5, 2));
 Assert::same(-2, Math::quotient(5, -2));

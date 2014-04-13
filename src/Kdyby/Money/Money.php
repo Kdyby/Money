@@ -51,8 +51,8 @@ class Money extends Integer
 	public static function fromFloat($amount, Currency $currency = NULL)
 	{
 		$currency = $currency ? : new NullCurrency();
-		$amount = round($amount * $currency->getSubunitsInUnit());
-		return new static(Math::parseInt($amount), $currency);
+		$amount = round(Math::parseNumber($amount) * $currency->getSubunitsInUnit());
+		return new static($amount, $currency);
 	}
 
 
