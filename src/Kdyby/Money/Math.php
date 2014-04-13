@@ -48,6 +48,21 @@ final class Math
 
 
 	/**
+	 * @param string|float|int
+	 * @throws InvalidArgumentException
+	 * @return float|int
+	 */
+	public static function parseNumber($s)
+	{
+		if (!is_numeric($s) || is_infinite($s)) {
+			throw new InvalidArgumentException('Provided value cannot be converted to number');
+		}
+		return $s * 1;
+	}
+
+
+
+	/**
 	 * Quotient defined by division with truncation toward zero.
 	 * @param int $int
 	 * @param int $divisor
