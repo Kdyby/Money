@@ -66,10 +66,10 @@ class MoneyObjectHydrationListenerTest extends \KdybyTests\IntegrationTestCase
 
 	public function dataEntityClasses()
 	{
-		return [
-			[OrderEntity::getClassName()],
-			[SpecificOrderEntity::getClassName()]
-		];
+		return array(
+			array(OrderEntity::getClassName()),
+			array(SpecificOrderEntity::getClassName()),
+		);
 	}
 
 
