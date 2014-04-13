@@ -33,4 +33,8 @@ test(function () use ($currency) {
 	Assert::exception(function () {
 		Money::from(1.1);
 	}, 'Kdyby\Money\InvalidArgumentException');
+
+	Assert::exception(function () {
+		Money::from(-1.1);
+	}, 'Kdyby\Money\InvalidArgumentException');
 });

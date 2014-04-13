@@ -150,6 +150,13 @@ class Currency extends Nette\Object implements ICurrency
 
 
 
+	public function isCompatible(Currency $currency)
+	{
+		return $this === $currency;
+	}
+
+
+
 	/**
 	 * @return string
 	 */

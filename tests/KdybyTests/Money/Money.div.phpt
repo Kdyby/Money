@@ -42,3 +42,16 @@ test(function () use ($currency) {
 	$testError(1.1);
 	$testError(-1.1);
 });
+
+test(function () {
+	$czechMoney = Money::from(1000, $czk = new Currency('CZK', 100));
+	$euMoney = Money::from(1000, $eur = new Currency('EUR', 100));
+
+	Assert::exception(function () use ($czechMoney, $euMoney) {
+		$czechMoney->div($euMoney);
+	}, 'Kdyby\Money\InvalidArgumentException', 'Currency EUR is not compatible with CZK.');
+
+	Assert::exception(function () use ($czechMoney, $euMoney) {
+		$euMoney->div($czechMoney);
+	}, 'Kdyby\Money\InvalidArgumentException', 'Currency CZK is not compatible with EUR.');
+});

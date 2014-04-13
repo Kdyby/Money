@@ -26,4 +26,11 @@ final class NullCurrency extends Currency
 		parent::__construct('NULL', 1, '', '', array());
 	}
 
+
+
+	public function isCompatible(Currency $currency)
+	{
+		return TRUE;
+	}
+
 }

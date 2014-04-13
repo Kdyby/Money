@@ -115,8 +115,8 @@ class Money extends Integer
 
 	protected function valueToInt($arg)
 	{
-		if ($arg instanceof self && $this->currency !== $arg->currency) {
-			throw new InvalidArgumentException();
+		if ($arg instanceof Money && !$arg->currency->isCompatible($this->currency)) {
+			throw new InvalidArgumentException("Currency $arg->currency is not compatible with $this->currency.");
 		}
 		return parent::valueToInt($arg);
 	}
