@@ -28,7 +28,7 @@ final class NullCurrency extends Currency
 
 
 
-	public function isCompatible(Currency $currency)
+	public function isInterchangeable(Currency $currency)
 	{
 		return TRUE;
 	}
