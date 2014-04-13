@@ -91,23 +91,23 @@ class Integer extends Nette\Object
 
 
 	/**
-	 * @param static|int
+	 * @param static|int|float
 	 * @return static
 	 */
 	public function mul($amount)
 	{
-		return $this->copyWithAmount($this->toInt() * $this->valueToInt($amount));
+		return $this->copyWithAmount(round($this->toInt() * $this->valueToNumber($amount)));
 	}
 
 
 
 	/**
-	 * @param static|int
+	 * @param static|int|float
 	 * @return static
 	 */
 	public function div($amount)
 	{
-		return $this->copyWithAmount(Math::truncateDivision($this->toInt(), $this->valueToInt($amount)));
+		return $this->copyWithAmount(Math::truncateDivision($this->toInt(), $this->valueToNumber($amount)));
 	}
 
 
@@ -207,6 +207,21 @@ class Integer extends Nette\Object
 			return $arg->toInt();
 		}
 		return Math::parseInt($arg);
+	}
+
+
+
+	/**
+	 * @param self|int|string|float $arg
+	 * @throws InvalidArgumentException
+	 * @return int|float
+	 */
+	protected function valueToNumber($arg)
+	{
+		if ($arg instanceof self) {
+			return $arg->toInt();
+		}
+		return Math::parseNumber($arg);
 	}
 
 

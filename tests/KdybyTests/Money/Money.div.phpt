@@ -29,6 +29,15 @@ test(function () use ($currency) {
 });
 
 test(function () use ($currency) {
+	$test = function ($b) use ($currency) {
+		$expect = new Money(Math::truncateDivision(1, $b), $currency);
+		$money = new Money(1, $currency);
+		Assert::equal($expect, $money->div($b));
+		Assert::equal($expect, $money->div((string) $b));
+	};
+	$test(1.1);
+	$test(-1.1);
+
 	$testError = function ($b) use ($currency) {
 		$money = new Money(1, $currency);
 		Assert::exception(function () use ($b, $money) {
@@ -39,8 +48,7 @@ test(function () use ($currency) {
 		}, 'Kdyby\Money\InvalidArgumentException');
 	};
 	$testError(INF);
-	$testError(1.1);
-	$testError(-1.1);
+	$testError(-INF);
 });
 
 test(function () {
