@@ -78,7 +78,7 @@ class MoneyObjectHydrationListener extends Nette\Object implements Kdyby\Events\
 			$moneyFieldClass = $this->entityManager->getClassMetadata($mapping['moneyFieldClass']);
 			$amount = $moneyFieldClass->getFieldValue($entity, $moneyField);
 
-			if ($amount instanceof Money) {
+			if ($amount instanceof Money || $amount === NULL) {
 				continue;
 			}
 
