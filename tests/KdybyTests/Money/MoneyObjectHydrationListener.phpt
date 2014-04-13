@@ -106,6 +106,39 @@ class MoneyObjectHydrationListenerTest extends \KdybyTests\IntegrationTestCase
 		);
 	}
 
+
+
+	public function testRepeatedLoading()
+	{
+		$container = $this->createContainer('order');
+		/** @var Kdyby\Doctrine\EntityManager $em */
+		$em = $container->getByType('Kdyby\Doctrine\EntityManager');
+		$class = $em->getClassMetadata(OrderEntity::getClassName());
+
+		// generate schema
+		$schema = new SchemaTool($em);
+		$schema->createSchema($em->getMetadataFactory()->getAllMetadata());
+
+		// test money hydration
+		$em->persist(new OrderEntity(1000, 'CZK'));
+		$em->flush();
+		$em->clear();
+
+		$currencies = $em->getRepository(Kdyby\Money\Currency::getClassName());
+
+		/** @var OrderEntity $order */
+		$order = $em->find(OrderEntity::getClassName(), 1);
+		Assert::equal(new Kdyby\Money\Money(1000, $currencies->findOneBy(array('code' => 'CZK'))), $order->getMoney());
+
+		// following loading should not fail
+		$order2 = $em->createQueryBuilder("o")
+			->select("o")
+			->from(OrderEntity::getClassName(), "o")
+			->where("o.id = :id")->setParameter("id", 1)
+			->getQuery()->getSingleResult();
+		Assert::same($order, $order2);
+	}
+
 }
 
 \run(new MoneyObjectHydrationListenerTest());

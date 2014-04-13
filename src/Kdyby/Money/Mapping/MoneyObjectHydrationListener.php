@@ -75,15 +75,19 @@ class MoneyObjectHydrationListener extends Nette\Object implements Kdyby\Events\
 		}
 
 		foreach ($fieldsMap as $moneyField => $mapping) {
-			$currencyAssocClass = $this->entityManager->getClassMetadata($mapping['currencyClass']);
 			$moneyFieldClass = $this->entityManager->getClassMetadata($mapping['moneyFieldClass']);
+			$amount = $moneyFieldClass->getFieldValue($entity, $moneyField);
 
+			if ($amount instanceof Money) {
+				continue;
+			}
+
+			$currencyAssocClass = $this->entityManager->getClassMetadata($mapping['currencyClass']);
 			$currency = $currencyAssocClass->getFieldValue($entity, $mapping['currencyAssociation']);
 			if (!$currency instanceof Kdyby\Money\Currency) {
 				$currency = new NullCurrency();
 			}
 
-			$amount = $moneyFieldClass->getFieldValue($entity, $moneyField);
 			$moneyFieldClass->setFieldValue($entity, $moneyField, Money::from($amount, $currency));
 		}
 	}
