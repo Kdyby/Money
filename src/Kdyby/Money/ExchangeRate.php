@@ -10,7 +10,6 @@
 
 namespace Kdyby\Money;
 
-use Doctrine\ORM\Mapping as ORM;
 use Kdyby;
 use Nette;
 
@@ -18,27 +17,34 @@ use Nette;
 
 /**
  * @author Filip Procházka <filip@prochazka.su>
- *
- * @ORM\Entity()
- * @ORM\Table(name="currency_exchange_rates")
  */
 class ExchangeRate extends Nette\Object
 {
 
 	/**
-	 * @ORM\Id()
-	 * @ORM\Column(type="integer")
-	 * @ORM\GeneratedValue
 	 * @var integer
 	 */
 	private $id;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Currency", inversedBy="rates", cascade={"persist"})
-	 * @ORM\JoinColumn(name="currency_code", referencedColumnName="code", nullable=FALSE)
+	 * @var \Datetime
+	 */
+	protected $since;
+
+	/**
+	 * @var \Datetime
+	 */
+	protected $till;
+
+	/**
 	 * @var Currency
 	 */
-	protected $currency;
+	protected $buy;
+
+	/**
+	 * @var Currency
+	 */
+	protected $sell;
 
 
 
@@ -48,16 +54,6 @@ class ExchangeRate extends Nette\Object
 	final public function getId()
 	{
 		return $this->id;
-	}
-
-
-
-	/**
-	 * @return Currency
-	 */
-	public function getCurrency()
-	{
-		return $this->currency;
 	}
 
 }

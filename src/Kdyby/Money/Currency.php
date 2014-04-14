@@ -11,7 +11,6 @@
 namespace Kdyby\Money;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
 use Nette;
 
 
@@ -20,9 +19,6 @@ use Nette;
  * @author Michal Gebauer <mishak@mishak.net>
  * @author Filip Procházka <filip@prochazka.su>
  * @author Ladislav Marek <ladislav@marek.su>
- *
- * @ORM\Entity()
- * @ORM\Table(name="currencies")
  *
  * @property-read string $code
  * @property-read string $number
@@ -34,38 +30,31 @@ class Currency extends Nette\Object implements ICurrency
 {
 
 	/**
-	 * @ORM\Id()
-	 * @ORM\Column(type="string", length=15)
 	 * @var string
 	 */
 	private $code;
 
 	/**
-	 * @ORM\Column(type="string", length=15, columnDefinition="CHAR(5) NOT NULL")
 	 * @var string
 	 */
 	private $number;
 
 	/**
-	 * @ORM\Column(type="string", length=100)
 	 * @var string
 	 */
 	private $name;
 
 	/**
-	 * @ORM\Column(type="integer", name="subunits_in_unit", length=3)
 	 * @var int
 	 */
 	private $subunitsInUnit;
 
 	/**
-	 * @ORM\Column(type="json_array")
 	 * @var string[]
 	 */
 	private $countries;
 
 	/**
-	 * @ORM\OneToMany(targetEntity="ExchangeRate", mappedBy="currency", cascade={"persist"})
 	 * @var ExchangeRate
 	 */
 	protected $rates;
