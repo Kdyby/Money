@@ -199,7 +199,7 @@ class Currency extends Nette\Object implements ICurrency
 		$record = CurrencyTable::getRecord($code);
 		return isset($currencies[$code])
 			? $currencies[$code]
-			: $currencies[$code] = new static($record['code'], $record['number'], $record['name'], $record['decimals'], $record['countries']);
+			: $currencies[$code] = new static($record['code'], $record['decimals'], $record['name'], $record['number'], $record['countries']);
 	}
 
 
