@@ -74,7 +74,8 @@ class GmpCalculator extends Nette\Object implements Kdyby\Money\ICalculator, Kdy
 	 */
 	public function compare($a, $b)
 	{
-		return gmp_cmp($a, $b);
+		$result = gmp_cmp($a, $b);
+		return $result > 0 ? 1 : ($result < 0 ? -1 : 0);
 	}
 
 
