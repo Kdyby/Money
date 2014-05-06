@@ -14,6 +14,10 @@
 			"name": "Filip Procházka",
 			"homepage": "http://filip-prochazka.com",
 			"email": "filip@prochazka.su"
+		},
+		{
+			"name": "Kdyby community",
+			"homepage": "https://github.com/Kdyby/Money/graphs/contributors"
 		}
 	],
 	"support": {
@@ -58,7 +62,13 @@
 			"Kdyby\\Money\\": "src/"
 		},
 		"classmap": [
-			"src/Kdyby/Money/exceptions.php"
+			"src/Kdyby/Money/exceptions.php",
+			"src/Kdyby/Money/compatibility.php"
+		]
+	},
+	"autoload-dev": {
+		"classmap": [
+			"tests/KdybyTests"
 		]
 	}
 }
