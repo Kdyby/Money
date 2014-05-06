@@ -25,8 +25,9 @@
 		"issues": "https://github.com/kdyby/money/issues"
 	},
 	"require": {
-		"doctrine/collections": "~1.2",
-		"nette/nette": "2.1.*@dev"
+		"nette/nette": "~2.1@dev",
+
+		"doctrine/collections": "~1.2"
 	},
 	"require-dev": {
 		"nette/tester": "@dev"
