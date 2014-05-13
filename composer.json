@@ -30,7 +30,8 @@
 		"doctrine/collections": "~1.2"
 	},
 	"require-dev": {
-		"nette/tester": "@dev"
+		"nette/tester": "@dev",
+		"jakub-onderka/php-parallel-lint": "~0.6"
 	},
 	"autoload": {
 		"psr-0": {

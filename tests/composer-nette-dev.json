@@ -48,11 +48,12 @@
 		"tracy/tracy": "@dev"
 	},
 	"require-dev": {
-		"nette/tester": "@dev",
 		"kdyby/doctrine": "@dev",
 		"kdyby/events": "@dev",
 		"kdyby/console": "@dev",
-		"kdyby/annotations": "@dev"
+		"kdyby/annotations": "@dev",
+		"nette/tester": "@dev",
+		"jakub-onderka/php-parallel-lint": "~0.6"
 	},
 	"suggest": {
 		"kdyby/doctrine": "@dev"
