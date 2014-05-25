@@ -33,10 +33,6 @@
 		"nette/nette": "2.2.*",
 		"nette/bootstrap": "2.2.*",
 
-		"kdyby/doctrine": "@dev",
-		"kdyby/events": "@dev",
-		"kdyby/console": "@dev",
-		"kdyby/annotations": "@dev",
 		"nette/tester": "@dev",
 		"jakub-onderka/php-parallel-lint": "~0.6"
 	},
