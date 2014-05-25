@@ -28,10 +28,6 @@
 		"nette/nette": "2.1.*"
 	},
 	"require-dev": {
-		"kdyby/doctrine": "@dev",
-		"kdyby/events": "@dev",
-		"kdyby/console": "@dev",
-		"kdyby/annotations": "@dev",
 		"nette/tester": "@dev",
 		"jakub-onderka/php-parallel-lint": "~0.6"
 	},
