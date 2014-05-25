@@ -25,11 +25,14 @@
 		"issues": "https://github.com/kdyby/money/issues"
 	},
 	"require": {
-		"nette/nette": "~2.1@dev",
+		"nette/utils": "~2.2@dev",
 
 		"doctrine/collections": "~1.2"
 	},
 	"require-dev": {
+		"nette/nette": "~2.2@dev",
+		"nette/bootstrap": "~2.2@dev",
+
 		"nette/tester": "@dev",
 		"jakub-onderka/php-parallel-lint": "~0.6"
 	},

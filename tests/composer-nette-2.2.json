@@ -25,9 +25,14 @@
 		"issues": "https://github.com/kdyby/money/issues"
 	},
 	"require": {
-		"nette/nette": "2.1.*"
+		"nette/utils": "2.2.*",
+
+		"doctrine/collections": "~1.2"
 	},
 	"require-dev": {
+		"nette/nette": "2.2.*",
+		"nette/bootstrap": "2.2.*",
+
 		"kdyby/doctrine": "@dev",
 		"kdyby/events": "@dev",
 		"kdyby/console": "@dev",
