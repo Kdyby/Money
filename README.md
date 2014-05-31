@@ -1,5 +1,9 @@
-Kdyby/Money [![Build Status](https://secure.travis-ci.org/Kdyby/Money.png?branch=master)](http://travis-ci.org/Kdyby/Money)
-===========================
+Kdyby/Money
+======
+
+[![Build Status](https://travis-ci.org/Kdyby/Money.svg?branch=master)](https://travis-ci.org/Kdyby/Money)
+[![Downloads this Month](https://img.shields.io/packagist/dm/Kdyby/Money.svg)](https://packagist.org/packages/Kdyby/Money)
+[![Latest stable](img.shields.io/packagist/v/Kdyby/Money.svg)](https://packagist.org/packages/Kdyby/Money)
 
 
 Requirements
