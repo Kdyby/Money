@@ -1,5 +1,9 @@
-Kdyby/Money [![Build Status](https://secure.travis-ci.org/Kdyby/Money.png?branch=master)](http://travis-ci.org/Kdyby/Money)
-===========================
+Kdyby/Money
+======
+
+[![Build Status](https://travis-ci.org/Kdyby/Money.svg?branch=nette-2.1)](https://travis-ci.org/Kdyby/Money)
+[![Downloads this Month](https://img.shields.io/packagist/dm/kdyby/money.svg)](https://packagist.org/packages/kdyby/money)
+[![Latest stable](https://img.shields.io/packagist/v/kdyby/money.svg)](https://packagist.org/packages/kdyby/money)
 
 
 Requirements
@@ -7,7 +11,23 @@ Requirements
 
 Kdyby/Money requires PHP 5.3.2 or higher.
 
-- [Nette Framework 2.0.x](https://github.com/nette/nette)
+- [Nette Framework](https://github.com/nette/nette)
+
+
+Installation
+------------
+
+The best way to install Kdyby/Money is using  [Composer](http://getcomposer.org/):
+
+```sh
+$ composer require kdyby/money:dev-nette-2.1
+```
+
+
+Documentation
+------------
+
+Lear more in the [documentation](https://github.com/Kdyby/Money/blob/nette-2.1/docs/en/index.md).
 
 
 -----
