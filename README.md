@@ -2,7 +2,7 @@ Kdyby/Money
 ======
 
 [![Build Status](https://travis-ci.org/Kdyby/Money.svg?branch=master)](https://travis-ci.org/Kdyby/Money)
-[![Downloads this Month](https://img.shields.io/packagist/dm/Kdyby/Money.svg)](https://packagist.org/packages/Kdyby/Money)
+[![Downloads this Month](https://img.shields.io/packagist/dm/kdyby/money.svg)](https://packagist.org/packages/kdyby/money)
 [![Latest stable](https://img.shields.io/packagist/v/kdyby/money.svg)](https://packagist.org/packages/kdyby/money)
 
 
