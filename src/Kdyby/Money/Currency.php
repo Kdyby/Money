@@ -184,13 +184,31 @@ final class Currency extends Nette\Object implements ICurrency
 	}
 
 
+	/**
+	 * @return string
+	 */
+	public function __sleep()
+	{
+		return array('code');
+	}
+
+
 
 	/**
-	 * @throws SingletonException
+	 * @throw InvalidArgumentException
 	 */
 	public function __wakeup()
 	{
-		throw new SingletonException("Unserialization is not allowed on this object.");
+		$code = $this->getCode();
+
+		if (($record = CurrencyTable::getRecord($code)) === NULL) {
+			throw new InvalidArgumentException("Currency code '$code' is not in a CurrencyTable.");
+		}
+		$this->code = $record['code'];
+		$this->number = $record['number'];
+		$this->name = $record['name'];
+		$this->decimals = $record['decimals'];
+		$this->countries = $record['countries'];
 	}
 
 
