@@ -27,7 +27,7 @@ $ composer require kdyby/money:dev-nette-2.1
 Documentation
 ------------
 
-Lear more in the [documentation](https://github.com/Kdyby/Money/blob/nette-2.1/docs/en/index.md).
+Learn more in the [documentation](https://github.com/Kdyby/Money/blob/nette-2.1/docs/en/index.md).
 
 
 -----
