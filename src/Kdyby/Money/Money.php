@@ -160,7 +160,6 @@ class Money extends Integer
 	public function __toString()
 	{
 		return (string) $this->toInt();
-//		return $this->truncated() . '.' . $this->paddedFractionPart(); //  . ' ' . $this->currency;
 	}
 
 

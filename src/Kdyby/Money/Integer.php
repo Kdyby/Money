@@ -125,7 +125,6 @@ class Integer extends Nette\Object
 
 
 	/**
-	 * =
 	 * @param static|int
 	 * @return bool
 	 */
