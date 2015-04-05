@@ -142,7 +142,12 @@ class Currency extends Nette\Object implements ICurrency
 
 	public function isInterchangeable(Currency $currency)
 	{
-		return $this === $currency;
+		return $this === $currency
+			|| ( // for BC
+				$this->code === $currency->code
+				&& $this->number === $currency->number
+				&& $this->subunitsInUnit === $currency->subunitsInUnit
+			);
 	}
 
 
