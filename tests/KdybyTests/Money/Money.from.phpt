@@ -19,6 +19,10 @@ test(function () use ($currency) {
 });
 
 test(function () use ($currency) {
+	Assert::equal(new Money(7, new NullCurrency()), Money::fromFloat(7.268, new NullCurrency()));
+	Assert::equal(new Money(73, new NullCurrency()), Money::fromFloat(72.68, new NullCurrency()));
+	Assert::equal(new Money(727, new NullCurrency()), Money::fromFloat(726.8, new NullCurrency()));
+
 	Assert::equal(new Money(0, new NullCurrency()), Money::fromFloat(0));
 	Assert::equal(new Money(1, new NullCurrency()), Money::fromFloat(1.1));
 	Assert::equal(new Money(1, new NullCurrency()), Money::fromFloat(1.4));
