@@ -185,7 +185,7 @@ class Integer extends Nette\Object
 
 	/**
 	 * @param static|int
-	 * @return bool
+	 * @return static
 	 */
 	public function max($amount)
 	{
@@ -196,7 +196,7 @@ class Integer extends Nette\Object
 
 	/**
 	 * @param static|int
-	 * @return bool
+	 * @return static
 	 */
 	public function min($amount)
 	{
