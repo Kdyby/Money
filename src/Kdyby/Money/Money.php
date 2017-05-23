@@ -27,7 +27,7 @@ class Money extends Integer
 	/**
 	 * @var Currency
 	 */
-	private $currency;
+	protected $currency;
 
 
 
